@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 pygame = "^2.5.2"
+ruff = "^0.1.14"
 
 
 [build-system]
