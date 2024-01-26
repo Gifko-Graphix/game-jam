@@ -1,9 +1,7 @@
 """Manager Sprite."""
-from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, RLEACCEL as RL
 from pygame import image
+from pygame.locals import RLEACCEL as RL
 from pygame.sprite import Sprite
-
-from game.defs import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Manager(Sprite):

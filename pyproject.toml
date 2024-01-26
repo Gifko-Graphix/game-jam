@@ -10,6 +10,24 @@ python = "^3.11"
 pygame = "^2.5.2"
 ruff = "^0.1.14"
 
+[tool.ruff]
+ignore = ["E741"]
+cache-dir = ".cache/ruff"
+line-length = 88
+indent-width = 4
+target-version = "py311"
+
+[tool.ruff.lint]
+# all rules are described here https://docs.astral.sh/ruff/rules/
+select = [
+    # Ruff
+    "RUF",
+	# isort
+	"I",
+    # pyflakes
+	"F",
+]
+
 
 [build-system]
 requires = ["poetry-core"]

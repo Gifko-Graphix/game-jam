@@ -1,9 +1,9 @@
+from pygame import image
+from pygame.locals import K_DOWN, K_LEFT, K_RIGHT, K_UP
+from pygame.locals import RLEACCEL as RL
 from pygame.sprite import Sprite
 
-from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, RLEACCEL as RL
-from pygame import image
-
-from game.defs import SCREEN_WIDTH, SCREEN_HEIGHT
+from game.defs import SCREEN_HEIGHT, SCREEN_WIDTH
 
 
 class Player(Sprite):
@@ -34,4 +34,3 @@ class Player(Sprite):
             self.rect.top = 0
         if self.rect.bottom >= SCREEN_HEIGHT:
             self.rect.bottom = SCREEN_HEIGHT
-            
