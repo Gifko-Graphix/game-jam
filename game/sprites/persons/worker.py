@@ -9,7 +9,7 @@ INTERACT_DISTANCE = 0.1
 class Worker(Person):
   def __init__(self) -> None:
     super().__init__()
-    self.image, self.rect = load_image("temp_worker.png", -1, scale=1)
+    self.surface, self.rect = load_image("temp_worker.png", -1)
     self.isWorking = True
     self.isFacing = "Forward"
     self.initial_rect = self.rect
