@@ -5,7 +5,6 @@ class Person(pg.sprite.Sprite):
   """Abstract class for all person objects"""
   def __init__(self):
     pg.sprite.Sprite.__init__(self)
-    self.image, self.rect = load_image("star.png", -1, scale=0.05)
     self.area = pg.display.get_surface().get_rect()
     self.velocity = 1
     self.isInteracting = False

@@ -1,6 +1,8 @@
 # Example file showing a circle moving on screen
 import pygame
 from game.sprites.persons.player import Player
+from game.sprites.persons.worker import Worker
+
 
 
 class Runner:
@@ -16,9 +18,9 @@ class Runner:
         running = True
         dt = 0
 
-        player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
         print("Started")
         player = Player()
+        worker = Worker()
 
         while running:
             # poll for events
@@ -29,9 +31,8 @@ class Runner:
 
             # fill the screen with a color to wipe away anything from last frame
             screen.fill("cyan")
-            allsprites = pygame.sprite.RenderPlain((player))
-
-
+            allsprites = pygame.sprite.RenderPlain((player, worker))
+            allsprites.draw(screen)
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
                 player.walkUp()
@@ -41,9 +42,12 @@ class Runner:
                 player.walkLeft()
             if keys[pygame.K_RIGHT]:
                 player.walkRight()
+            
+            worker.detectPlayer(player)
 
             # flip() the display to put your work on screen
-            allsprites.draw(screen)
+            
+            allsprites.update()
             pygame.display.flip()
 
     def stop(self) -> None:
