@@ -1,22 +1,20 @@
 import pygame
-from game.sprites.persons.player import Player
-from game.sprites.persons.worker import Worker
-
-
-from pygame import display, event, key, time
-from pygame.sprite import Group as SpriteGroup, spritecollideany
-
+from pygame import display, event, time
 from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
 )
+from pygame.sprite import Group as SpriteGroup
+
+from game.defs import LEVEL_TIMER_EVENT, SCREEN_HEIGHT, SCREEN_WIDTH
 from game.sprites.manager import Manager
+from game.sprites.persons.player import Player
+from game.sprites.persons.worker import Worker
 
 # from game.sprites.cloud import Cloud
 # from game.sprites.enemy import Enemy
 # from game.sprites.player import Player
 from game.sprites.timer import Timer
-from game.defs import SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_TIMER_EVENT, LEVEL_TIMER_VALUE
 
 
 class Runner:
@@ -26,7 +24,9 @@ class Runner:
         """Initialize the game."""
         # pygame setup
         pygame.init()
-        self.screen = display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.screen = display.set_mode(
+            (SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN | pygame.SCALED
+        )
         self.clock = time.Clock()
         self.running: bool = False
         self.all_sprites = SpriteGroup()
@@ -58,7 +58,6 @@ class Runner:
             elif e.type == LEVEL_TIMER_EVENT:
                 self._update_level_timer()
 
-
     def check_win_state(self) -> None:
         """Check if the player has won."""
         if self.level_timer.value == 0:
@@ -72,16 +71,14 @@ class Runner:
                 if m.frustration_level >= 100:
                     self.player_win = True
                     self.game_over = True
-        
+
         # final check of the player's win state
         if self.game_over:
             # stop the level timer
             time.set_timer(LEVEL_TIMER_EVENT, 0)
-            
+
             # stop the game
             self.running = False
-            
-
 
     def start(self) -> None:
         player = Player()
@@ -112,7 +109,7 @@ class Runner:
             if keys[pygame.K_RIGHT]:
                 if not player.willCollide("Right", self.workers):
                     player.walkRight()
-            
+
             self.all_sprites.update()
             worker.detectPlayer(player)
 

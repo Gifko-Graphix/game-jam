@@ -20,6 +20,12 @@ run:
 clean-venv:
 	rm -rf .venv
 
+format:
+	poetry run ruff format
+
+lint:
+	poetry run ruff check --fix
+
 clean: clean-venv
 
 .PHONY: setup install-tools setup sync_deps sync poetry_lock run clean-venv clean
