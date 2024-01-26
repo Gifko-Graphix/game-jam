@@ -8,6 +8,6 @@ class Player(Person):
     Person.__init__(self)
     self.image, self.rect = load_image("star.png", -1, scale=0.05)
     self.isCaught = False
-    self.velocity = 2
+    self.velocity = 1
     self.rect.topleft = 10, 90
 

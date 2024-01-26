@@ -28,3 +28,16 @@ class Person(pg.sprite.Sprite):
   def walkDown(self):
     if self.rect.bottom < self.area.bottom:
       self.rect.move_ip(0, self.velocity)
+
+  def willCollide(self, direction, allsprites):
+    if (direction == "Left"):
+      nextPos = self.rect.move(-self.velocity, 0)
+    if (direction == "Right"):
+      nextPos = self.rect.move(self.velocity, 0)
+    if (direction == "Up"):
+      nextPos = self.rect.move(0, -self.velocity)
+    if (direction == "Down"):
+      nextPos = self.rect.move(0, self.velocity)
+
+    allRects = [sprite.rect for sprite in allsprites]
+    return nextPos.collidelist(allRects) != -1
