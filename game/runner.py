@@ -1,5 +1,6 @@
 # Example file showing a circle moving on screen
 import pygame
+from game.sprites.persons.player import Player
 
 
 class Runner:
@@ -17,6 +18,8 @@ class Runner:
 
         player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
         print("Started")
+        player = Player()
+
         while running:
             # poll for events
             # pygame.QUIT event means the user clicked X to close your window
@@ -25,39 +28,23 @@ class Runner:
                     running = False
 
             # fill the screen with a color to wipe away anything from last frame
-            screen.fill("purple")
+            screen.fill("cyan")
+            allsprites = pygame.sprite.RenderPlain((player))
 
-            pygame.draw.circle(screen, "red", player_pos, 40)
 
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_a] and keys[pygame.K_s]:
-                player_pos.y += 300 * dt * 0.707
-                player_pos.x -= 300 * dt * 0.707
-            elif keys[pygame.K_a] and keys[pygame.K_w]:
-                player_pos.y -= 300 * dt * 0.707
-                player_pos.x -= 300 * dt * 0.707
-            elif keys[pygame.K_d] and keys[pygame.K_w]:
-                player_pos.y -= 300 * dt * 0.707
-                player_pos.x += 300 * dt * 0.707
-            elif keys[pygame.K_d] and keys[pygame.K_s]:
-                player_pos.y += 300 * dt * 0.707
-                player_pos.x += 300 * dt * 0.707
-            elif keys[pygame.K_w]:
-                player_pos.y -= 300 * dt
-            elif keys[pygame.K_s]:
-                player_pos.y += 300 * dt
-            elif keys[pygame.K_a]:
-                player_pos.x -= 300 * dt
-            elif keys[pygame.K_d]:
-                player_pos.x += 300 * dt
+            if keys[pygame.K_UP]:
+                player.walkUp()
+            if keys[pygame.K_DOWN]:
+                player.walkDown()
+            if keys[pygame.K_LEFT]:
+                player.walkLeft()
+            if keys[pygame.K_RIGHT]:
+                player.walkRight()
 
             # flip() the display to put your work on screen
+            allsprites.draw(screen)
             pygame.display.flip()
-
-            # limits FPS to 60
-            # dt is delta time in seconds since last frame, used for framerate-
-            # independent physics.
-            dt = clock.tick(60) / 1000
 
     def stop(self) -> None:
         pygame.quit()
