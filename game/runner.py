@@ -32,16 +32,21 @@ class Runner:
             # fill the screen with a color to wipe away anything from last frame
             screen.fill("cyan")
             allsprites = pygame.sprite.RenderPlain((player, worker))
+            workers = pygame.sprite.Group(worker)
             allsprites.draw(screen)
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
-                player.walkUp()
+                if not player.willCollide("Up", workers):
+                    player.walkUp()
             if keys[pygame.K_DOWN]:
-                player.walkDown()
+                if not player.willCollide("Down", workers):
+                    player.walkDown()
             if keys[pygame.K_LEFT]:
-                player.walkLeft()
+                if not player.willCollide("Left", workers):
+                    player.walkLeft()
             if keys[pygame.K_RIGHT]:
-                player.walkRight()
+                if not player.willCollide("Right", workers):
+                    player.walkRight()
             
             worker.detectPlayer(player)
 
