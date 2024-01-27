@@ -34,6 +34,7 @@ class Runner:
         """Initialize the game."""
         # pygame setup
         pygame.init()
+        pygame.display.set_caption("Agents of Chaos")
         self.screen = display.set_mode(
             (SCREEN_WIDTH, SCREEN_HEIGHT),
         )
@@ -142,6 +143,7 @@ class Runner:
             worker = Worker(*coords)
             self.all_sprites.add(worker)
             self.workers.add(worker)
+            self.playerInteractables.add(worker)
     
         self.running = True
 
@@ -152,7 +154,6 @@ class Runner:
         self.all_sprites.add(self.electricPanel)
         self.playerInteractables.add(self.electricPanel)
         self.playerInteractables.add(conveyor_belt)
-        self.playerInteractables.add(worker)
         self.all_sprites.add(worker)
         self.all_sprites.add(manager)
 
