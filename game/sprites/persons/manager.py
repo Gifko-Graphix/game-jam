@@ -96,16 +96,12 @@ class Manager(Person):
             if self.walkCount == 0:
                 self.walkCount = 8
             elif self.direction == Direction.up:
-                print("up")
                 self.surface = self.walkUpAnim[self.walkCount % 8][0]
             elif self.direction == Direction.down:
-                print("down")
                 self.surface = self.walkDownAnim[self.walkCount % 8][0]
             elif self.direction == Direction.left:
-                print("left")
                 self.surface = self.walkLeftAnim[self.walkCount % 8][0]
             elif self.direction == Direction.right:
-                print("right")
                 self.surface = self.walkRightAnim[self.walkCount % 8][0]
             corner_x, corner_y, direction = corner_positions[self.current_corner]
             self.direction = direction

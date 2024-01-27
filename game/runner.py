@@ -7,20 +7,20 @@ from pygame.locals import (
     KEYDOWN,
 )
 from pygame.sprite import Group as SpriteGroup
-from game.sprites.environment.electricPanel import ElectricPanel
 
 from game.defs import (
+    ELECTRIC_PANEL_TIMER_EVENT,
     LEVEL_TIMER_EVENT,
     MANAGER_METER_EVENT,
     PLAYER_TRIGGER_INTERACTION,
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
     WORKER_TIMER_EVENT,
-    ELECTRIC_PANEL_TIMER_EVENT,
     Direction,
     WorkerState,
 )
 from game.sprites.environment.conveyor_belt import ConveyorBelt
+from game.sprites.environment.electricPanel import ElectricPanel
 from game.sprites.persons.manager import Manager
 from game.sprites.persons.player import Player
 from game.sprites.persons.worker import Worker
@@ -42,7 +42,6 @@ class Runner:
         self.player: Optional[Player] = None
         self.electricPanel: Optional[ElectricPanel] = None
         self.all_sprites = SpriteGroup()
-        self.environment = SpriteGroup()
         self.workers = SpriteGroup()
         self.playerInteractables = SpriteGroup()
         self.managers = SpriteGroup()
@@ -145,7 +144,6 @@ class Runner:
             self.all_sprites.add(worker)
             self.workers.add(worker)
     
-
         self.running = True
 
         self.meters.add(manager.meter)
@@ -190,8 +188,8 @@ class Runner:
             workers: list[Worker] = self.workers.sprites()
             for worker in workers:
                 worker.detectPlayer(self.player)
+            self.electricPanel.detectPlayer(self.player)
             self.managers.update()
-            self.environment.update()
     
             # check for collisions
             self.check_collisions()
