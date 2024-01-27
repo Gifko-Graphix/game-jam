@@ -1,5 +1,7 @@
 import pygame as pg
 
+from game.defs import Direction
+
 
 class Person(pg.sprite.Sprite):
     """Abstract class for all person objects"""
@@ -30,14 +32,14 @@ class Person(pg.sprite.Sprite):
         if self.rect.bottom < self.area.bottom:
             self.rect.move_ip(0, self.velocity)
 
-    def willCollide(self, direction, allsprites):
-        if direction == "Left":
+    def willCollide(self, direction: Direction, allsprites):
+        if direction == Direction.left:
             nextPos = self.rect.move(-self.velocity, 0)
-        if direction == "Right":
+        if direction == Direction.right:
             nextPos = self.rect.move(self.velocity, 0)
-        if direction == "Up":
+        if direction == Direction.up:
             nextPos = self.rect.move(0, -self.velocity)
-        if direction == "Down":
+        if direction == Direction.down:
             nextPos = self.rect.move(0, self.velocity)
 
         allRects = [sprite.rect for sprite in allsprites]
