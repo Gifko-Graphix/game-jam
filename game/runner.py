@@ -181,11 +181,14 @@ class Runner:
             keys = pygame.key.get_pressed()
             
             if keys[pygame.K_RETURN]:
+                self.all_sprites.empty()
+                self.init()
                 self.main_loop()
             if keys[pygame.K_q]:
+                self.stop()
                 break
         
-        self.stop()
+        # self.stop()
 
     def run(self) -> None:
         """Start the game."""
@@ -256,6 +259,9 @@ class Runner:
                 self.player.isWalking = False
             if keys[pygame.K_SPACE]:
                 self.player.triggerInteractionDelay(self.playerInteractables)
+
+            if keys[pygame.K_ESCAPE]:
+                self.end()
 
             if keys[pygame.K_q]:
                 self.end()
