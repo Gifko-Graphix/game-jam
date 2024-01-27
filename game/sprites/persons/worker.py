@@ -5,10 +5,7 @@ from game.sprites.persons.person import Person
 from game.sprites.persons.player import Player
 from utils.loader import load_image
 
-INTERACT_DISTANCE = 10
-DISTRACTION_TIME_SECONDS = 10
-WORKING_SPEED = 5
-DISTRACTED_SPEED = 10
+DISTRACTION_TIME_SECONDS = 40
 
 
 class Worker(Person):
@@ -25,22 +22,7 @@ class Worker(Person):
         self.hitbox = self.rect.scale_by(2, 2)
 
     def update(self, all_sprites) -> None:
-        if self.state == WorkerState.working:
-            if self.velocity > 0:
-                self.velocity = WORKING_SPEED
-            elif self.velocity < 0:
-                self.velocity = -WORKING_SPEED
-        elif self.state == WorkerState.distracted:
-            if self.velocity > 0:
-                self.velocity = DISTRACTED_SPEED
-            elif self.velocity < 0:
-                self.velocity = -DISTRACTED_SPEED
-
-        if (self.velocity > 0 and self.willCollide(Direction.right, all_sprites)) or (
-            self.velocity < 0 and self.willCollide(Direction.left, all_sprites)
-        ):
-            self.velocity *= -1
-            self.surface = pg.transform.flip(self.surface, True, False)
+        pass
 
     def detectPlayer(self, player: Player) -> None:
         if self.hitbox.colliderect(player.rect):
