@@ -8,6 +8,7 @@ from pygame.locals import (
     K_RETURN
 )
 from pygame.sprite import Group as SpriteGroup
+from game.sprites.canInteractIndicator import CanInteractIndicator
 
 from game.defs import (
     ELECTRIC_PANEL_TIMER_EVENT,
@@ -53,6 +54,7 @@ class Runner:
         self.all_sprites.add(self.level_timer)
         self.player_win = False
         self.game_over = False
+        self.CanInteractIndicator = None
 
     def _update_level_timer(self) -> None:
         """Update the level timer."""
@@ -198,8 +200,10 @@ class Runner:
         self.player = Player()
         manager = Manager()
         self.electricPanel = ElectricPanel()
+        self.CanInteractIndicator = CanInteractIndicator()
         conveyor_belt = ConveyorBelt(500, 350)
         self.all_sprites.add(conveyor_belt)
+        self.all_sprites.add(self.CanInteractIndicator)
 
         worker_y = 350
         worker_coords_list = [(300, worker_y), (400, worker_y), (550, worker_y)]
@@ -264,7 +268,9 @@ class Runner:
                 worker.detectPlayer(self.player)
             self.electricPanel.detectPlayer(self.player)
             self.managers.update()
-
+            self.CanInteractIndicator.checkForAnyPossibleInteract(self.playerInteractables, self.player)
+            self.CanInteractIndicator.update()
+    
             # check for collisions
             self.check_collisions()
 
