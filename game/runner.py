@@ -6,7 +6,7 @@ from pygame.locals import (
 )
 from pygame.sprite import Group as SpriteGroup
 
-from game.defs import LEVEL_TIMER_EVENT, SCREEN_HEIGHT, SCREEN_WIDTH
+from game.defs import LEVEL_TIMER_EVENT, PLAYER_TRIGGER_INTERACTION, SCREEN_HEIGHT, SCREEN_WIDTH, WORKER_TIMER_EVENT, Direction, WorkerState
 from game.sprites.manager import Manager
 from game.sprites.persons.player import Player
 from game.sprites.persons.worker import Worker
@@ -57,6 +57,12 @@ class Runner:
                     self.running = False
             elif e.type == LEVEL_TIMER_EVENT:
                 self._update_level_timer()
+            elif e.type == WORKER_TIMER_EVENT:
+                for worker in self.workers:
+                    if worker.state == WorkerState.distracted:
+                        worker.countdown_distraction()
+            elif e.type == PLAYER_TRIGGER_INTERACTION:
+                pass
 
     def check_win_state(self) -> None:
         """Check if the player has won."""
@@ -98,19 +104,22 @@ class Runner:
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
-                if not player.willCollide("Up", self.workers):
+                if not player.willCollide(Direction.up, self.workers):
                     player.walkUp()
             if keys[pygame.K_DOWN]:
-                if not player.willCollide("Down", self.workers):
+                if not player.willCollide(Direction.down, self.workers):
                     player.walkDown()
             if keys[pygame.K_LEFT]:
-                if not player.willCollide("Left", self.workers):
+                if not player.willCollide(Direction.left, self.workers):
                     player.walkLeft()
             if keys[pygame.K_RIGHT]:
-                if not player.willCollide("Right", self.workers):
+                if not player.willCollide(Direction.right, self.workers):
                     player.walkRight()
+            if keys[pygame.K_SPACE]:
+                player.interact(self.workers)
 
-            self.all_sprites.update()
+            player.update()
+            self.workers.update([player])
             worker.detectPlayer(player)
 
             self.check_win_state()

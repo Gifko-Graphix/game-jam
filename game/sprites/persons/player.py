@@ -1,3 +1,4 @@
+from game.defs import Direction
 from game.sprites.persons.person import Person
 from utils.loader import load_image
 
@@ -7,5 +8,11 @@ class Player(Person):
         Person.__init__(self)
         self.surface, self.rect = load_image("PlayerL.png", -1, scale=1)
         self.isCaught = False
-        self.velocity = 1
+        self.velocity = 15
+        self.direction = Direction.up
         self.rect.topleft = 10, 90
+
+    def interact(self, allInteractables):
+      for sprite in allInteractables:
+        if sprite.canInteract:
+            sprite.foo_action()
