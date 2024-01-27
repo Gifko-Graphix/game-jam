@@ -1,8 +1,4 @@
 """Manager Sprite."""
-import pygame as pg
-from pygame import image
-from pygame.locals import RLEACCEL as RL
-from pygame.sprite import Sprite
 
 from game.defs import Direction
 from game.sprites.persons.person import Person
