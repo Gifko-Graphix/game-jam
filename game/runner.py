@@ -153,7 +153,9 @@ class Runner:
             elif keys[pygame.K_RIGHT]:
                 if not self.player.willCollide(Direction.right, self.workers):
                     self.player.walkRight()
-            elif keys[pygame.K_SPACE]:
+            else:
+                self.player.isWalking = False
+            if keys[pygame.K_SPACE]:
                 self.player.triggerInteractionDelay(self.workers)
 
             self.player.update()
