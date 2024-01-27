@@ -70,10 +70,8 @@ class Player(Person):
         self.direction = Direction.up
         self.rect.topleft = 90, 600
 
-    def interact(self, allInteractables):
-        for sprite in allInteractables:
-            if sprite.canInteract:
-                sprite.foo_action()
+    def interact(self, sprite: Person):
+        sprite.foo_action()
 
     def walkLeft(self):
         if not self.isInteracting:
@@ -129,7 +127,9 @@ class Player(Person):
     
     def triggerInteractionDelay(self, allInteractables):
         for sprite in allInteractables:
+            print()
             if sprite.canInteract:
+                print("Sprite can interact")
                 pg.time.set_timer(PLAYER_TRIGGER_INTERACTION, 1000)
                 self.isInteracting = True
                 self.interactWith = sprite

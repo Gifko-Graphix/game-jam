@@ -1,8 +1,10 @@
 """Conveyor belt sprite class."""
-from pygame import Surface
+from pygame import Surface, time
 from pygame.sprite import Sprite
 
-from game.defs import Direction
+from game.defs import ELECTRIC_PANEL_TIMER_EVENT, Direction
+from game.sprites.environment.electricPanel import OFF_TIME_SECONDS
+from game.sprites.persons.player import Player
 
 
 class ConveyorBelt(Sprite):
@@ -13,6 +15,7 @@ class ConveyorBelt(Sprite):
         super(ConveyorBelt, self).__init__()
         # self.surface = image.load("assets/conveyor_belt.png").convert()
         # self.surface.set_colorkey((255, 255, 255), RLEACCEL)
+        self.canInteract = False
         self.surface = Surface((500, 50))
         self.surface.fill((255, 255, 255))
         self.rect = self.surface.get_rect(center=(x, y))
@@ -20,11 +23,20 @@ class ConveyorBelt(Sprite):
 
     def update(self) -> None:
         """Update conveyor belt sprite."""
-        if self.direction == Direction.left:
-            self.rect.move_ip(-1, 0)
-        elif self.direction == Direction.right:
-            self.rect.move_ip(1, 0)
-        elif self.direction == Direction.up:
-            self.rect.move_ip(0, -1)
-        elif self.direction == Direction.down:
-            self.rect.move_ip(0, 1)
+
+    def detectPlayer(self, player: Player) -> None:
+        if self.hitbox.colliderect(player.rect):
+            self.canInteract = True
+        else:
+            self.canInteract = False
+
+    def foo_action(self):
+        self.isOn = False
+        self.countdownTimerValue = OFF_TIME_SECONDS
+        time.set_timer(ELECTRIC_PANEL_TIMER_EVENT, 100)
+
+    def countdown_timer(self):
+        self.countdownTimerValue -= 1
+        if self.countdownTimerValue <= 0:
+            time.set_timer(ELECTRIC_PANEL_TIMER_EVENT, 0)
+            self.isOn = True

@@ -22,7 +22,7 @@ class Meter(Sprite):
         if positive:
             factor: float = 0.01
         else:
-            factor: float = 0.005
+            factor: float = 0.001
 
         if positive:
             self.progress += factor
@@ -34,6 +34,7 @@ class Meter(Sprite):
         if self.progress <= 0.0:
             self.progress = 0.0
 
+        self.surface.fill((255, 255, 255))
         draw.rect(
             self.surface, (255, 0, 0), Rect(0, 0, self.max_width * self.progress, 10)
         )
