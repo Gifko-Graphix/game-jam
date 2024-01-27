@@ -1,6 +1,6 @@
 import pygame as pg
 
-from game.defs import Direction, PLAYER_TRIGGER_INTERACTION
+from game.defs import Direction
 
 
 class Person(pg.sprite.Sprite):

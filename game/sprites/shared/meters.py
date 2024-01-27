@@ -22,13 +22,13 @@ class Meter(Sprite):
         if positive:
             factor: float = 0.01
         else:
-            factor: float = 0.0005
+            factor: float = 0.005
 
         if positive:
             self.progress += factor
         else:
             self.progress -= factor
-        
+
         if self.progress >= 1.0:
             self.progress = 1.0
         if self.progress <= 0.0:

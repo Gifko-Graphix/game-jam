@@ -71,12 +71,14 @@ class Runner:
                 for worker in workers:
                     if worker.state == WorkerState.distracted:
                         worker.countdown_distraction()
-                distracted_workers = [w for w in workers if w.state == WorkerState.distracted]
+                distracted_workers = [
+                    w for w in workers if w.state == WorkerState.distracted
+                ]
                 # print(distracted_workers)
                 if distracted_workers:
                     for m in managers:
                         m.meter.update(positive=True)
-                        
+
             elif e.type == PLAYER_TRIGGER_INTERACTION:
                 self.player.checkInteractTimer(self.workers)
             elif e.type == MANAGER_METER_EVENT:
