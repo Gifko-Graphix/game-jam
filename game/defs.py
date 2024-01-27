@@ -15,7 +15,6 @@ ELECTRIC_PANEL_TIMER_EVENT = pygame.USEREVENT + 5
 # Timer values
 LEVEL_TIMER_VALUE = 90
 
-
 class WorkerState(Enum):
     working = 1
     distracted = 2

@@ -1,10 +1,11 @@
-from typing import Optional
+from typing import Optional  # noqa: I001
 
 import pygame
 from pygame import display, event, time
 from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
+    K_RETURN
 )
 from pygame.sprite import Group as SpriteGroup
 
@@ -19,6 +20,7 @@ from game.defs import (
     Direction,
     WorkerState,
 )
+import game.colors as colors
 from game.sprites.environment.conveyor_belt import ConveyorBelt
 from game.sprites.environment.electricPanel import ElectricPanel
 from game.sprites.persons.manager import Manager
@@ -96,7 +98,6 @@ class Runner:
                     for m in managers:
                         m.meter.update(positive=True)
 
-
     def check_win_state(self) -> None:
         """Check if the player has won."""
         if self.level_timer.value == 0:
@@ -131,6 +132,69 @@ class Runner:
                 self.running = False
 
     def start(self) -> None:
+        """Show the start Screen."""
+        font = pygame.font.SysFont("Roboto Bold", 50)
+        surface = font.render("Agents of Chaos", True, colors.WHITE)
+        rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100))
+        self.screen.fill((135, 205, 245))
+        self.screen.blit(surface, rect)
+
+        font = pygame.font.SysFont("Roboto Bold", 30)
+        surface = font.render("Press ENTER to start", True, colors.WHITE)
+        rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        self.screen.blit(surface, rect)
+        display.flip()
+        while True:
+            for e in event.get():
+                if e.type == pygame.QUIT:
+                    self.end()
+            keys = pygame.key.get_pressed()
+            
+            if keys[pygame.K_RETURN]:
+                break
+            if keys[pygame.K_ESCAPE]:
+                self.end()
+    
+    def end(self, player_won: Optional[bool] = None) -> None:
+        """Show the stop Screen."""
+        if player_won is None:
+            message = "Quit Game?"
+        else:
+            message = "You Win!" if player_won else "You Lose!"
+        font = pygame.font.SysFont("Roboto Bold", 50)
+        surface = font.render(message, True, colors.WHITE)
+        rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100))
+        self.screen.fill((135, 205, 245))
+        self.screen.blit(surface, rect)
+
+        font = pygame.font.SysFont("Roboto Bold", 30)
+        surface = font.render("Press ENTER to play again, or Q to quit", True, colors.WHITE)
+        rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        self.screen.blit(surface, rect)
+        display.flip()
+        while True:
+            for e in event.get():
+                if e.type == pygame.QUIT:
+                    self.end()
+            keys = pygame.key.get_pressed()
+            
+            if keys[pygame.K_RETURN]:
+                self.main_loop()
+            if keys[pygame.K_q]:
+                break
+        
+        self.stop()
+
+    def run(self) -> None:
+        """Start the game."""
+        self.start()
+
+        self.init()
+        self.main_loop()
+        self.end()
+
+    def init(self):
+        """Initialize the game."""
         self.player = Player()
         manager = Manager()
         self.electricPanel = ElectricPanel()
@@ -144,8 +208,6 @@ class Runner:
             self.all_sprites.add(worker)
             self.workers.add(worker)
             self.playerInteractables.add(worker)
-    
-        self.running = True
 
         self.meters.add(manager.meter)
 
@@ -159,6 +221,9 @@ class Runner:
 
         self.managers.add(manager)
 
+    def main_loop(self) -> None:
+        """Main loop for the game."""
+        self.running = True
         while self.running:
             # poll for events
             # pygame.QUIT event means the user clicked X to close your window
@@ -169,18 +234,27 @@ class Runner:
                 if not self.player.willCollide(Direction.up, self.playerInteractables):
                     self.player.walkUp()
             elif keys[pygame.K_DOWN]:
-                if not self.player.willCollide(Direction.down, self.playerInteractables):
+                if not self.player.willCollide(
+                    Direction.down, self.playerInteractables
+                ):
                     self.player.walkDown()
             elif keys[pygame.K_LEFT]:
-                if not self.player.willCollide(Direction.left, self.playerInteractables):
+                if not self.player.willCollide(
+                    Direction.left, self.playerInteractables
+                ):
                     self.player.walkLeft()
             elif keys[pygame.K_RIGHT]:
-                if not self.player.willCollide(Direction.right, self.playerInteractables):
+                if not self.player.willCollide(
+                    Direction.right, self.playerInteractables
+                ):
                     self.player.walkRight()
             else:
                 self.player.isWalking = False
             if keys[pygame.K_SPACE]:
                 self.player.triggerInteractionDelay(self.playerInteractables)
+
+            if keys[pygame.K_q]:
+                self.end()
 
             # update all sprites
             self.player.update()
@@ -190,7 +264,7 @@ class Runner:
                 worker.detectPlayer(self.player)
             self.electricPanel.detectPlayer(self.player)
             self.managers.update()
-    
+
             # check for collisions
             self.check_collisions()
 
@@ -212,14 +286,7 @@ class Runner:
 
         # after loop ends check what state the game is in and whether the player won or lost
         if self.game_over:
-            if self.player_win:
-                print("You win!")
-                # render win screen & play win sound
-                # play next level?
-            else:
-                print("You lose!")
-                # render lose screen & play lose sound
-                # play again?
+            self.end(self.player_win)
 
     def stop(self) -> None:
         pygame.quit()
