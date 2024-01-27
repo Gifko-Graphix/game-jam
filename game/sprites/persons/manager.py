@@ -5,16 +5,17 @@ from pygame import image
 from pygame.locals import RLEACCEL as RL
 from pygame.sprite import Sprite
 from game.defs import Direction
+from game.sprites.persons.person import Person
 
 from utils.loader import load_image
 from game.sprites.shared.meters import Meter
 
 # Define corner positions
 corner_positions: list[tuple[int, int, Direction]] = [
-    (100, 100, Direction.left)  # Top-left corner
+    (100, 100, Direction.up),  # Top-left corner
     (600, 100, Direction.right),  # Top-right corner
     (600, 600, Direction.down),  # Bottom-right corner
-    (100, 600, Direction.up),  # Bottom-left corner
+    (100, 600, Direction.left),  # Bottom-left corner
 ]
 
 # Object parameters
@@ -61,16 +62,13 @@ M_walkRightFiles = [
     "ManagerR8.png",
 ]
 
-class Manager(Sprite):
+class Manager(Person):
     """Player Sprite"""
 
     def __init__(self):
-        # super(Manager, self).__init__()
-        # self.surface = image.load("assets/jet.png").convert()
-        # self.surface.set_colorkey((255, 255, 255), RL)
-        # self.rect = self.surface.get_rect(center=(100, 100))  # starting position
-        # self.pseudo_rect = self.rect.scale_by(4, 4)
-        self.surface, self.rect = load_image("PlayerL.png", -1, scale=1)
+        super(Manager, self).__init__()
+        self.surface, self.rect = load_image("ManagerR.png", -1, 1)
+        self.pseudo_rect = self.rect.scale_by(4, 4)
         self.walkUpAnim = [load_image(file, -1, 1) for file in M_walkUpFiles]
         self.walkDownAnim = [load_image(file, -1, 1) for file in M_walkDownFiles]
         self.walkLeftAnim = [load_image(file, -1, 1) for file in M_walkLeftFiles]
@@ -93,8 +91,27 @@ class Manager(Sprite):
         # Calculate the movement towards the current corner
         self.isWalking = True
         if self.isWalking:
+            
             if self.walkCount == 0:
                 self.walkCount = 8
+            elif self.direction == Direction.up:
+                print("up")
+                self.surface = self.walkUpAnim[self.walkCount % 8][0]
+            elif self.direction == Direction.down:
+                print("down")
+                self.surface = self.walkDownAnim[self.walkCount % 8][0]
+            elif self.direction == Direction.left:
+                print("left")
+                self.surface = self.walkLeftAnim[self.walkCount % 8][0]
+            elif self.direction == Direction.right:
+                print("right")
+                self.surface = self.walkRightAnim[self.walkCount % 8][0]
+            corner_x, corner_y, direction = corner_positions[self.current_corner]
+            self.direction = direction
+            dx = corner_x - self.rect.x
+            dy = corner_y - self.rect.y
+            distance = (dx**2 + dy**2) ** 0.5
+            self.walkCount -=1
         else:
             if self.direction == Direction.up:
                 self.surface = self.idleUp[0]
@@ -105,12 +122,7 @@ class Manager(Sprite):
             if self.direction == Direction.right:
                 self.surface = self.idleRight[0]
 
-        corner_x, corner_y, direction = corner_positions[self.current_corner]
-        self.direction = direction
-        dx = corner_x - self.rect.x
-        dy = corner_y - self.rect.y
-        distance = (dx**2 + dy**2) ** 0.5
-        self.walkCount -=1
+        
 
         if distance > speed:
             # Normalize the direction vector
