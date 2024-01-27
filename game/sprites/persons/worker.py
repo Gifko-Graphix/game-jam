@@ -16,6 +16,7 @@ class Worker(Person):
         super().__init__()
         self.surface, self.rect = load_image("temp_worker.png", -1)
         self.isWorking = True
+        self.interactDisplayText = "press SPACE to distract worker"
         self.state = WorkerState.working
         self.direction = Direction.up
         self.velocity = 10
@@ -40,7 +41,6 @@ class Worker(Person):
         ):
             self.velocity *= -1
             self.surface = pg.transform.flip(self.surface, True, False)
-        # self.walk()
 
     def detectPlayer(self, player: Player) -> None:
         if self.hitbox.colliderect(player.rect):
