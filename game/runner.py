@@ -7,6 +7,7 @@ from pygame.locals import (
     KEYDOWN,
 )
 from pygame.sprite import Group as SpriteGroup
+from game.sprites.environment.electricPanel import ElectricPanel
 
 from game.defs import (
     LEVEL_TIMER_EVENT,
@@ -15,6 +16,7 @@ from game.defs import (
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
     WORKER_TIMER_EVENT,
+    ELECTRIC_PANEL_TIMER_EVENT,
     Direction,
     WorkerState,
 )
@@ -38,8 +40,9 @@ class Runner:
         self.running: bool = False
         self.all_sprites = SpriteGroup()
         self.player: Optional[Player] = None
+        self.electricPanel: Optional[ElectricPanel] = None
         self.workers = SpriteGroup()
-
+        self.playerInteractables = SpriteGroup()
         self.managers = SpriteGroup()
         self.meters = SpriteGroup()
         self.level_timer = Timer()
@@ -85,6 +88,13 @@ class Runner:
                 managers: list[Manager] = self.managers.sprites()
                 for m in managers:
                     m.meter.update(positive=m.is_frustrated)
+            elif e.type == ELECTRIC_PANEL_TIMER_EVENT:
+                managers: list[Manager] = self.managers.sprites()
+                self.electricPanel.countdown_timer()
+                if not self.electricPanel.isOn:
+                    for m in managers:
+                        m.meter.update(positive=True)
+
 
     def check_win_state(self) -> None:
         """Check if the player has won."""
@@ -123,6 +133,7 @@ class Runner:
         self.player = Player()
         worker = Worker()
         manager = Manager()
+        self.electricPanel = ElectricPanel()
 
         self.running = True
 
@@ -130,6 +141,9 @@ class Runner:
         # one group for all sprites
         self.all_sprites.add(self.player)
         self.all_sprites.add(manager.meter)
+        self.all_sprites.add(self.electricPanel)
+        self.playerInteractables.add(self.electricPanel)
+        self.playerInteractables.add(worker)
         self.all_sprites.add(worker)
         self.all_sprites.add(manager)
         self.workers.add(worker)
@@ -142,24 +156,27 @@ class Runner:
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
-                if not self.player.willCollide(Direction.up, self.workers):
+                if not self.player.willCollide(Direction.up, self.playerInteractables):
                     self.player.walkUp()
             elif keys[pygame.K_DOWN]:
-                if not self.player.willCollide(Direction.down, self.workers):
+                if not self.player.willCollide(Direction.down, self.playerInteractables):
                     self.player.walkDown()
             elif keys[pygame.K_LEFT]:
-                if not self.player.willCollide(Direction.left, self.workers):
+                if not self.player.willCollide(Direction.left, self.playerInteractables):
                     self.player.walkLeft()
             elif keys[pygame.K_RIGHT]:
-                if not self.player.willCollide(Direction.right, self.workers):
+                if not self.player.willCollide(Direction.right, self.playerInteractables):
                     self.player.walkRight()
             else:
                 self.player.isWalking = False
             if keys[pygame.K_SPACE]:
-                self.player.triggerInteractionDelay(self.workers)
+                self.player.triggerInteractionDelay(self.playerInteractables)
 
             self.player.update()
-            self.workers.update([self.player])
+            self.workers.update([self.player, self.electricPanel])
+            self.electricPanel.update()
+
+            self.electricPanel.detectPlayer(self.player)
             worker.detectPlayer(self.player)
             # self.meters.update()
             self.managers.update()
