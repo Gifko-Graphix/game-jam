@@ -14,9 +14,11 @@ MANAGER_METER_EVENT = pygame.USEREVENT + 4
 # Timer values
 LEVEL_TIMER_VALUE = 90
 
+
 class WorkerState(Enum):
     working = 1
     distracted = 2
+
 
 class Direction(Enum):
     up = 1

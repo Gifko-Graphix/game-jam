@@ -28,59 +28,32 @@ class Player(Person):
         self.isCaught = False
         self.velocity = 5
         self.direction = Direction.up
-        self.rect.topleft = 10, 90
-    
+        self.rect.topleft = 800, 90
+
+    def interact(self, allInteractables):
+        for sprite in allInteractables:
+            if sprite.canInteract:
+                sprite.foo_action()
+
+    def update(self):
+        """Update the player sprite."""
+
     def walkLeft(self):
-        self.isWalking = True
         self.direction = Direction.left
-        self.surface = self.walkLeftnAnim[self.walkCount // 9][0]
-        self.walkCount -= 1
         if self.rect.left > self.area.left:
             self.rect.move_ip(-self.velocity, 0)
 
     def walkRight(self):
-        self.isWalking = True
         self.direction = Direction.right
-        self.surface = self.walkRightAnim[self.walkCount // 9][0]
-        self.walkCount -= 1
         if self.rect.right < self.area.right:
             self.rect.move_ip(self.velocity, 0)
 
     def walkUp(self):
-        self.isWalking = True
         self.direction = Direction.up
-        self.surface = self.walkUpAnim[self.walkCount // 9][0]
-        self.walkCount -= 1
-        if self.rect.top < self.area.top:
-            self.rect.move_ip(0, self.velocity)
         if self.rect.top > self.area.top:
             self.rect.move_ip(0, -self.velocity)
 
     def walkDown(self):
-        self.isWalking = True
         self.direction = Direction.down
-        self.surface = self.walkDownAnim[self.walkCount // 9][0]
-        self.walkCount -= 1
         if self.rect.bottom < self.area.bottom:
             self.rect.move_ip(0, self.velocity)
-    
-    def update(self):
-        if self.isWalking:
-            if self.walkCount == 0:
-                self.walkCount = 9
-        else:
-            if self.direction == Direction.up:
-                self.surface = self.idleUp[0]
-            if self.direction == Direction.down:
-                self.surface = self.idleDown[0]
-            if self.direction == Direction.left:
-                self.surface = self.idleLeft[0]
-            if self.direction == Direction.right:
-                self.surface = self.idleRight[0]
-        super().update()
-
-
-    def interact(self, allInteractables):
-      for sprite in allInteractables:
-        if sprite.canInteract:
-            sprite.foo_action()

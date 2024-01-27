@@ -17,10 +17,17 @@ class Meter(Sprite):
         time.set_timer(MANAGER_METER_EVENT, 100)
         self.progress = 0.0
 
-    def update(self, positive: bool = True, factor: float = 0.001):
+    def update(self, positive: bool = False):
         """Update the meter's value."""
+        if positive:
+            factor: float = 0.001
+        else:
+            factor: float = 0.0005
+
         if self.progress >= 1.0:
             self.progress = 1.0
+        if self.progress <= 0.0:
+            self.progress = 0.0
         if positive:
             self.progress += factor
         else:

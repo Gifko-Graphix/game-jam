@@ -5,10 +5,6 @@ from pygame.sprite import Sprite
 
 from game.sprites.shared.meters import Meter
 
-# Rectangle parameters
-rect_width = 800
-rect_height = 600
-
 # Define corner positions
 corner_positions = [
     (100, 100),  # Top-left corner
@@ -28,7 +24,9 @@ class Manager(Sprite):
         super(Manager, self).__init__()
         self.surface = image.load("assets/jet.png").convert()
         self.surface.set_colorkey((255, 255, 255), RL)
-        self.rect = self.surface.get_rect(center=(800, 600))  # starting position
+        self.rect = self.surface.get_rect(center=(100, 100))  # starting position
+        self.pseudo_rect = self.rect.scale_by(4, 4)
+        self.is_frustrated = False
         self.meter = Meter()
         self.current_corner = 0
 
@@ -47,6 +45,7 @@ class Manager(Sprite):
             # Move the rectangle
             self.rect.x += int(direction[0] * speed)
             self.rect.y += int(direction[1] * speed)
+            self.pseudo_rect.center = self.rect.center
         else:
             # Move to the next corner
             self.current_corner = (self.current_corner + 1) % len(corner_positions)

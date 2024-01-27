@@ -1,3 +1,5 @@
+from typing import Optional
+
 import pygame
 from pygame import display, event, time
 from pygame.locals import (
@@ -35,6 +37,7 @@ class Runner:
         self.clock = time.Clock()
         self.running: bool = False
         self.all_sprites = SpriteGroup()
+        self.player: Optional[Player] = None
         self.workers = SpriteGroup()
 
         self.managers = SpriteGroup()
@@ -63,14 +66,15 @@ class Runner:
             elif e.type == LEVEL_TIMER_EVENT:
                 self._update_level_timer()
             elif e.type == WORKER_TIMER_EVENT:
-                for worker in self.workers:
+                for worker in self.workers.sprites():
                     if worker.state == WorkerState.distracted:
                         worker.countdown_distraction()
             elif e.type == PLAYER_TRIGGER_INTERACTION:
                 pass
             elif e.type == MANAGER_METER_EVENT:
-                for m in self.meters.sprites():
-                    m.update(positive=True)
+                managers: list[Manager] = self.managers.sprites()
+                for m in managers:
+                    m.meter.update(positive=m.is_frustrated)
 
     def check_win_state(self) -> None:
         """Check if the player has won."""
@@ -96,8 +100,17 @@ class Runner:
             # stop the game
             self.running = False
 
+    def check_collisions(self) -> None:
+        """Check if the player has collided with a manager."""
+        managers = self.managers.sprites()
+        for m in managers:
+            if m.pseudo_rect.colliderect(self.player.rect):
+                self.player_win = False
+                self.game_over = True
+                self.running = False
+
     def start(self) -> None:
-        player = Player()
+        self.player = Player()
         worker = Worker()
         manager = Manager()
 
@@ -105,7 +118,7 @@ class Runner:
 
         self.meters.add(manager.meter)
         # one group for all sprites
-        self.all_sprites.add(player)
+        self.all_sprites.add(self.player)
         self.all_sprites.add(manager.meter)
         self.all_sprites.add(worker)
         self.all_sprites.add(manager)
@@ -119,29 +132,26 @@ class Runner:
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
-                if not player.willCollide(Direction.up, self.workers):
-                    player.walkUp()
-            elif keys[pygame.K_DOWN]:
-                if not player.willCollide(Direction.down, self.workers):
-                    player.walkDown()
-            elif keys[pygame.K_LEFT]:
-                if not player.willCollide(Direction.left, self.workers):
-                    player.walkLeft()
-            elif keys[pygame.K_RIGHT]:
-                if not player.willCollide(Direction.right, self.workers):
-                    player.walkRight()
-            elif keys[pygame.K_SPACE]:
-                player.interact(self.workers)
-            else:
-                player.isWalking = False
-            
+                if not self.player.willCollide(Direction.up, self.workers):
+                    self.player.walkUp()
+            if keys[pygame.K_DOWN]:
+                if not self.player.willCollide(Direction.down, self.workers):
+                    self.player.walkDown()
+            if keys[pygame.K_LEFT]:
+                if not self.player.willCollide(Direction.left, self.workers):
+                    self.player.walkLeft()
+            if keys[pygame.K_RIGHT]:
+                if not self.player.willCollide(Direction.right, self.workers):
+                    self.player.walkRight()
+            if keys[pygame.K_SPACE]:
+                self.player.interact(self.workers)
 
-            player.update()
-            self.workers.update([player])
-            worker.detectPlayer(player)
-            # self.all_sprites.update()
-            self.meters.update()
+            self.player.update()
+            self.workers.update([self.player])
+            worker.detectPlayer(self.player)
+            # self.meters.update()
             self.managers.update()
+            self.check_collisions()
 
             self.check_win_state()
 
