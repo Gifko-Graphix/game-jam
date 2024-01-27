@@ -20,18 +20,20 @@ class Meter(Sprite):
     def update(self, positive: bool = False):
         """Update the meter's value."""
         if positive:
-            factor: float = 0.001
+            factor: float = 0.01
         else:
             factor: float = 0.0005
 
-        if self.progress >= 1.0:
-            self.progress = 1.0
-        if self.progress <= 0.0:
-            self.progress = 0.0
         if positive:
             self.progress += factor
         else:
             self.progress -= factor
+        
+        if self.progress >= 1.0:
+            self.progress = 1.0
+        if self.progress <= 0.0:
+            self.progress = 0.0
+
         draw.rect(
             self.surface, (255, 0, 0), Rect(0, 0, self.max_width * self.progress, 10)
         )

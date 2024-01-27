@@ -6,7 +6,7 @@ from game.sprites.persons.player import Player
 from utils.loader import load_image
 
 INTERACT_DISTANCE = 10
-DISTRACTION_TIME_SECONDS = 2
+DISTRACTION_TIME_SECONDS = 10
 WORKING_SPEED = 5
 DISTRACTED_SPEED = 10
 
@@ -59,11 +59,13 @@ class Worker(Person):
         self.hitbox = self.rect.scale_by(2, 2)
 
     def foo_action(self):
+        print("foo action")
         self.state = WorkerState.distracted
         self.distractedTimerValue = DISTRACTION_TIME_SECONDS
-        pg.time.set_timer(WORKER_TIMER_EVENT, 1000)
+        pg.time.set_timer(WORKER_TIMER_EVENT, 100)
 
     def countdown_distraction(self):
+        print("countdown")
         self.distractedTimerValue -= 1
         if self.distractedTimerValue <= 0:
             pg.time.set_timer(WORKER_TIMER_EVENT, 0)

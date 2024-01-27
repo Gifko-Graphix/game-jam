@@ -66,9 +66,17 @@ class Runner:
             elif e.type == LEVEL_TIMER_EVENT:
                 self._update_level_timer()
             elif e.type == WORKER_TIMER_EVENT:
-                for worker in self.workers.sprites():
+                workers: list[Worker] = self.workers.sprites()
+                managers: list[Manager] = self.managers.sprites()
+                for worker in workers:
                     if worker.state == WorkerState.distracted:
                         worker.countdown_distraction()
+                distracted_workers = [w for w in workers if w.state == WorkerState.distracted]
+                # print(distracted_workers)
+                if distracted_workers:
+                    for m in managers:
+                        m.meter.update(positive=True)
+                        
             elif e.type == PLAYER_TRIGGER_INTERACTION:
                 pass
             elif e.type == MANAGER_METER_EVENT:
