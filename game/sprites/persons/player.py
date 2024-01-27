@@ -79,7 +79,7 @@ class Player(Person):
         if not self.isInteracting:
             self.isWalking = True
             self.direction = Direction.left
-            self.surface = self.walkLeftnAnim[self.walkCount % 8][0]
+            self.surface = self.walkLeftAnim[self.walkCount % 8][0]
             self.walkCount -= 1
             if self.rect.left > self.area.left:
                 self.rect.move_ip(-self.velocity, 0)
