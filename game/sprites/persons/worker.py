@@ -12,14 +12,14 @@ DISTRACTED_SPEED = 10
 
 
 class Worker(Person):
-    def __init__(self) -> None:
+    def __init__(self, x: int, y: int) -> None:
         super().__init__()
         self.surface, self.rect = load_image("temp_worker.png", -1)
         self.isWorking = True
         self.state = WorkerState.working
         self.direction = Direction.up
         self.velocity = 10
-        self.rect.topleft = (200, 200)
+        self.rect.topleft = (x, y)
         self.distractedTimerValue = DISTRACTION_TIME_SECONDS
         self.hitbox = self.rect.scale_by(2, 2)
 
@@ -40,7 +40,7 @@ class Worker(Person):
         ):
             self.velocity *= -1
             self.surface = pg.transform.flip(self.surface, True, False)
-        self.walk()
+        # self.walk()
 
     def detectPlayer(self, player: Player) -> None:
         if self.hitbox.colliderect(player.rect):

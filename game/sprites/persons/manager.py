@@ -1,21 +1,22 @@
 """Manager Sprite."""
 import pygame as pg
-
 from pygame import image
 from pygame.locals import RLEACCEL as RL
 from pygame.sprite import Sprite
+
 from game.defs import Direction
 from game.sprites.persons.person import Person
-
-from utils.loader import load_image
 from game.sprites.shared.meters import Meter
+from utils.loader import load_image
 
-# Define corner positions
-corner_positions: list[tuple[int, int, Direction]] = [
+# Bottom-left corner
+corner_positions = [
     (100, 100, Direction.up),  # Top-left corner
-    (600, 100, Direction.right),  # Top-right corner
-    (600, 600, Direction.down),  # Bottom-right corner
-    (100, 600, Direction.left),  # Bottom-left corner
+    (200, 100, Direction.right),  # Top-right corner
+    (200, 250, Direction.down),  # Top-right corner
+    (800, 250, Direction.right),  # Bottom-right corner
+    (800, 450, Direction.down),  # Bottom-left corner
+    (100, 450, Direction.left),  # Bottom-left corner
 ]
 
 # Object parameters
