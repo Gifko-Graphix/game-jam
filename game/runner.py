@@ -6,14 +6,19 @@ from pygame.locals import (
 )
 from pygame.sprite import Group as SpriteGroup
 
-from game.defs import LEVEL_TIMER_EVENT, PLAYER_TRIGGER_INTERACTION, SCREEN_HEIGHT, SCREEN_WIDTH, WORKER_TIMER_EVENT, Direction, WorkerState
-from game.sprites.manager import Manager
+from game.defs import (
+    LEVEL_TIMER_EVENT,
+    MANAGER_METER_EVENT,
+    PLAYER_TRIGGER_INTERACTION,
+    SCREEN_HEIGHT,
+    SCREEN_WIDTH,
+    WORKER_TIMER_EVENT,
+    Direction,
+    WorkerState,
+)
+from game.sprites.persons.manager import Manager
 from game.sprites.persons.player import Player
 from game.sprites.persons.worker import Worker
-
-# from game.sprites.cloud import Cloud
-# from game.sprites.enemy import Enemy
-# from game.sprites.player import Player
 from game.sprites.timer import Timer
 
 
@@ -25,7 +30,7 @@ class Runner:
         # pygame setup
         pygame.init()
         self.screen = display.set_mode(
-            (SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN | pygame.SCALED
+            (SCREEN_WIDTH, SCREEN_HEIGHT),
         )
         self.clock = time.Clock()
         self.running: bool = False
@@ -33,7 +38,7 @@ class Runner:
         self.workers = SpriteGroup()
 
         self.managers = SpriteGroup()
-        self.managers.add(Manager())
+        self.meters = SpriteGroup()
         self.level_timer = Timer()
         self.all_sprites.add(self.level_timer)
         self.player_win = False
@@ -63,6 +68,9 @@ class Runner:
                         worker.countdown_distraction()
             elif e.type == PLAYER_TRIGGER_INTERACTION:
                 pass
+            elif e.type == MANAGER_METER_EVENT:
+                for m in self.meters.sprites():
+                    m.update(positive=True)
 
     def check_win_state(self) -> None:
         """Check if the player has won."""
@@ -70,11 +78,13 @@ class Runner:
             self.game_over = True
             # check the manager's frustration level
             for m in self.managers.sprites():
-                if m.frustration_level < 100:
+                if m.meter.is_full:
                     self.player_win = False
         else:
-            for m in self.managers.sprites():
-                if m.frustration_level >= 100:
+            managers: list[Manager] = self.managers.sprites()
+            for m in managers:
+                if m.meter.is_full:
+                    print("game over")
                     self.player_win = True
                     self.game_over = True
 
@@ -89,13 +99,18 @@ class Runner:
     def start(self) -> None:
         player = Player()
         worker = Worker()
+        manager = Manager()
 
         self.running = True
 
+        self.meters.add(manager.meter)
         # one group for all sprites
         self.all_sprites.add(player)
+        self.all_sprites.add(manager.meter)
         self.all_sprites.add(worker)
+        self.all_sprites.add(manager)
         self.workers.add(worker)
+        self.managers.add(manager)
 
         while self.running:
             # poll for events
@@ -121,6 +136,9 @@ class Runner:
             player.update()
             self.workers.update([player])
             worker.detectPlayer(player)
+            # self.all_sprites.update()
+            self.meters.update()
+            self.managers.update()
 
             self.check_win_state()
 
