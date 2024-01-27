@@ -121,17 +121,20 @@ class Runner:
             if keys[pygame.K_UP]:
                 if not player.willCollide(Direction.up, self.workers):
                     player.walkUp()
-            if keys[pygame.K_DOWN]:
+            elif keys[pygame.K_DOWN]:
                 if not player.willCollide(Direction.down, self.workers):
                     player.walkDown()
-            if keys[pygame.K_LEFT]:
+            elif keys[pygame.K_LEFT]:
                 if not player.willCollide(Direction.left, self.workers):
                     player.walkLeft()
-            if keys[pygame.K_RIGHT]:
+            elif keys[pygame.K_RIGHT]:
                 if not player.willCollide(Direction.right, self.workers):
                     player.walkRight()
-            if keys[pygame.K_SPACE]:
+            elif keys[pygame.K_SPACE]:
                 player.interact(self.workers)
+            else:
+                player.isWalking = False
+            
 
             player.update()
             self.workers.update([player])
