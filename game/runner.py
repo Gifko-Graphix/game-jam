@@ -20,6 +20,7 @@ from game.defs import (
     Direction,
     WorkerState,
 )
+from game.sprites.environment.conveyor_belt import ConveyorBelt
 from game.sprites.persons.manager import Manager
 from game.sprites.persons.player import Player
 from game.sprites.persons.worker import Worker
@@ -38,9 +39,10 @@ class Runner:
         )
         self.clock = time.Clock()
         self.running: bool = False
-        self.all_sprites = SpriteGroup()
         self.player: Optional[Player] = None
         self.electricPanel: Optional[ElectricPanel] = None
+        self.all_sprites = SpriteGroup()
+        self.environment = SpriteGroup()
         self.workers = SpriteGroup()
         self.playerInteractables = SpriteGroup()
         self.managers = SpriteGroup()
@@ -131,22 +133,32 @@ class Runner:
 
     def start(self) -> None:
         self.player = Player()
-        worker = Worker()
         manager = Manager()
         self.electricPanel = ElectricPanel()
+        conveyor_belt = ConveyorBelt(500, 350)
+        self.all_sprites.add(conveyor_belt)
+
+        worker_y = 350
+        worker_coords_list = [(300, worker_y), (400, worker_y), (550, worker_y)]
+        for coords in worker_coords_list:
+            worker = Worker(*coords)
+            self.all_sprites.add(worker)
+            self.workers.add(worker)
+    
 
         self.running = True
 
         self.meters.add(manager.meter)
-        # one group for all sprites
+
         self.all_sprites.add(self.player)
         self.all_sprites.add(manager.meter)
         self.all_sprites.add(self.electricPanel)
         self.playerInteractables.add(self.electricPanel)
+        self.playerInteractables.add(conveyor_belt)
         self.playerInteractables.add(worker)
         self.all_sprites.add(worker)
         self.all_sprites.add(manager)
-        self.workers.add(worker)
+
         self.managers.add(manager)
 
         while self.running:
@@ -172,19 +184,22 @@ class Runner:
             if keys[pygame.K_SPACE]:
                 self.player.triggerInteractionDelay(self.playerInteractables)
 
+            # update all sprites
             self.player.update()
-            self.workers.update([self.player, self.electricPanel])
-            self.electricPanel.update()
-
-            self.electricPanel.detectPlayer(self.player)
-            worker.detectPlayer(self.player)
-            # self.meters.update()
+            self.workers.update([self.player])
+            workers: list[Worker] = self.workers.sprites()
+            for worker in workers:
+                worker.detectPlayer(self.player)
             self.managers.update()
+            self.environment.update()
+    
+            # check for collisions
             self.check_collisions()
 
+            # check if the player has won
             self.check_win_state()
 
-            # Fill the screen with black
+            # bg color
             self.screen.fill((135, 205, 245))
 
             # draw all sprites

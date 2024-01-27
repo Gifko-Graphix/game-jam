@@ -19,6 +19,7 @@ LEVEL_TIMER_VALUE = 90
 class WorkerState(Enum):
     working = 1
     distracted = 2
+    idle = 3
 
 
 class Direction(Enum):

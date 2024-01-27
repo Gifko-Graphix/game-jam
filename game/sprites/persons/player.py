@@ -68,7 +68,7 @@ class Player(Person):
         self.isCaught = False
         self.velocity = 5
         self.direction = Direction.up
-        self.rect.topleft = 800, 90
+        self.rect.topleft = 90, 600
 
     def interact(self, allInteractables):
         for sprite in allInteractables:
@@ -126,9 +126,6 @@ class Player(Person):
                 self.surface = self.idleLeft[0]
             if self.direction == Direction.right:
                 self.surface = self.idleRight[0]
-
-    def interact(self, sprite):
-        sprite.foo_action()
     
     def triggerInteractionDelay(self, allInteractables):
         for sprite in allInteractables:
