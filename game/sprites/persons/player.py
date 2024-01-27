@@ -53,7 +53,7 @@ class Player(Person):
         self.surface, self.rect = load_image("PlayerL.png", -1, scale=1)
         self.walkUpAnim = [load_image(file, -1, 1) for file in walkUpFiles]
         self.walkDownAnim = [load_image(file, -1, 1) for file in walkDownFiles]
-        self.walkLeftnAnim = [load_image(file, -1, 1) for file in walkLeftFiles]
+        self.walkLeftAnim = [load_image(file, -1, 1) for file in walkLeftFiles]
         self.walkRightAnim = [load_image(file, -1, 1) for file in walkRightFiles]
 
         self.idleUp = load_image("PlayerB.png", -1, 1)
