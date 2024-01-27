@@ -1,8 +1,9 @@
+import pygame as pg
+
+from game.defs import WORKER_TIMER_EVENT, Direction, WorkerState
 from game.sprites.persons.person import Person
 from game.sprites.persons.player import Player
-from game.defs import WORKER_TIMER_EVENT, Direction, WorkerState
 from utils.loader import load_image
-import pygame as pg
 
 INTERACT_DISTANCE = 10
 DISTRACTION_TIME_SECONDS = 2

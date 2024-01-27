@@ -4,8 +4,7 @@ import pygame as pg
 
 utils_dir = os.path.split(os.path.abspath(__file__))[0]
 parent_dir = os.path.dirname(os.path.normpath(utils_dir))
-print(parent_dir)
-data_dir = os.path.join(parent_dir, "game/assets")
+data_dir = os.path.join(parent_dir, "assets")
 
 
 def load_image(name, colorkey=None, scale=1):
