@@ -80,7 +80,7 @@ class Runner:
                         m.meter.update(positive=True)
 
             elif e.type == PLAYER_TRIGGER_INTERACTION:
-                self.player.checkInteractTimer(self.workers)
+                self.player.checkInteractTimer()
             elif e.type == MANAGER_METER_EVENT:
                 managers: list[Manager] = self.managers.sprites()
                 for m in managers:
@@ -154,7 +154,7 @@ class Runner:
                 if not self.player.willCollide(Direction.right, self.workers):
                     self.player.walkRight()
             elif keys[pygame.K_SPACE]:
-                self.player.triggerInteractionDelay()
+                self.player.triggerInteractionDelay(self.workers)
 
             self.player.update()
             self.workers.update([self.player])

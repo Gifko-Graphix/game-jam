@@ -61,6 +61,7 @@ class Player(Person):
         self.idleLeft = load_image("PlayerL.png", -1, 1)
         self.idleRight = load_image("PlayerR.png", -1, 1)
         self.isInteracting = False
+        self.interactWith = Person()
         self.timeToInteract = PLAYER_TIME_TO_INTERACT
         self.isWalking = False
         self.walkCount = 9
@@ -126,16 +127,23 @@ class Player(Person):
             if self.direction == Direction.right:
                 self.surface = self.idleRight[0]
 
-    def triggerInteractionDelay(self):
-        pg.time.set_timer(PLAYER_TRIGGER_INTERACTION, 1000)
-        self.isInteracting = True
+    def interact(self, sprite):
+        sprite.foo_action()
+    
+    def triggerInteractionDelay(self, allInteractables):
+        for sprite in allInteractables:
+            if sprite.canInteract:
+                pg.time.set_timer(PLAYER_TRIGGER_INTERACTION, 1000)
+                self.isInteracting = True
+                self.interactWith = sprite
+                self.timeToInteract = PLAYER_TIME_TO_INTERACT
 
-    def checkInteractTimer(self, allInteractables):
+    def checkInteractTimer(self):
         if self.isInteracting:
             if self.timeToInteract == 0:
                 pg.time.set_timer(PLAYER_TRIGGER_INTERACTION, 0)
                 self.isInteracting = False
                 self.timeToInteract = PLAYER_TIME_TO_INTERACT
-                self.interact(allInteractables)
+                self.interact(self.interactWith)
             else:
                 self.timeToInteract -= 1
