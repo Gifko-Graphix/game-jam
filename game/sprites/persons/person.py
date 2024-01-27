@@ -1,6 +1,6 @@
 import pygame as pg
 
-from game.defs import Direction
+from game.defs import Direction, PLAYER_TRIGGER_INTERACTION
 
 
 class Person(pg.sprite.Sprite):
@@ -10,7 +10,6 @@ class Person(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.area = pg.display.get_surface().get_rect()
         self.velocity = 1
-        self.isInteracting = False
         self.canInteract = False
 
     def update(self):

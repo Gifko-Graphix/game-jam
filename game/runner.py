@@ -70,7 +70,7 @@ class Runner:
                     if worker.state == WorkerState.distracted:
                         worker.countdown_distraction()
             elif e.type == PLAYER_TRIGGER_INTERACTION:
-                pass
+                self.player.checkInteractTimer(self.workers)
             elif e.type == MANAGER_METER_EVENT:
                 managers: list[Manager] = self.managers.sprites()
                 for m in managers:
@@ -134,17 +134,17 @@ class Runner:
             if keys[pygame.K_UP]:
                 if not self.player.willCollide(Direction.up, self.workers):
                     self.player.walkUp()
-            if keys[pygame.K_DOWN]:
+            elif keys[pygame.K_DOWN]:
                 if not self.player.willCollide(Direction.down, self.workers):
                     self.player.walkDown()
-            if keys[pygame.K_LEFT]:
+            elif keys[pygame.K_LEFT]:
                 if not self.player.willCollide(Direction.left, self.workers):
                     self.player.walkLeft()
-            if keys[pygame.K_RIGHT]:
+            elif keys[pygame.K_RIGHT]:
                 if not self.player.willCollide(Direction.right, self.workers):
                     self.player.walkRight()
-            if keys[pygame.K_SPACE]:
-                self.player.interact(self.workers)
+            elif keys[pygame.K_SPACE]:
+                self.player.triggerInteractionDelay()
 
             self.player.update()
             self.workers.update([self.player])
