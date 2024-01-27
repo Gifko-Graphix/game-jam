@@ -78,7 +78,6 @@ class Runner:
                 distracted_workers = [
                     w for w in workers if w.state == WorkerState.distracted
                 ]
-                # print(distracted_workers)
                 if distracted_workers:
                     for m in managers:
                         m.meter.update(positive=True)

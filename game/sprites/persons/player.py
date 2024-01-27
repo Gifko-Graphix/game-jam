@@ -127,9 +127,7 @@ class Player(Person):
     
     def triggerInteractionDelay(self, allInteractables):
         for sprite in allInteractables:
-            print()
             if sprite.canInteract:
-                print("Sprite can interact")
                 pg.time.set_timer(PLAYER_TRIGGER_INTERACTION, 1000)
                 self.isInteracting = True
                 self.interactWith = sprite
