@@ -2,11 +2,11 @@ from pygame.sprite import Sprite
 from pygame import Surface, Rect, Color, font
 from pygame import display
 
-class CanInteractIndicator(Sprite):
+class InteractionIndicator(Sprite):
   def __init__(self):
     super().__init__()
     self.isActive = False
-    self.text = "Press SPACE to interact"
+    self.text = "Go cause Chaos!"
     self.displayText = self.text
     self.surface = Surface((100, 20))
     self.surface.fill((100, 200, 100))
@@ -14,11 +14,8 @@ class CanInteractIndicator(Sprite):
     screen = display.get_surface()
     self.rect = self.surface.get_rect(center=(screen.get_width()/2 - 50, screen.get_height() - 50))
   
-  def update(self, text=None):
-    if self.isActive:
-      self.surface = self.font.render(self.displayText, True, (255, 255, 255))
-    else:
-      self.surface = self.font.render(self.displayText, True, (200, 200, 200))
+  def update(self):
+    self.surface = self.font.render(self.displayText, True, (255, 255, 255))
 
   def checkForAnyPossibleInteract(self, sprites, player):
     if player.isInteracting:

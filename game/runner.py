@@ -8,7 +8,7 @@ from pygame.locals import (
     K_RETURN
 )
 from pygame.sprite import Group as SpriteGroup
-from game.sprites.canInteractIndicator import CanInteractIndicator
+from game.sprites.interaction_indicator import InteractionIndicator
 
 from game.defs import (
     ELECTRIC_PANEL_TIMER_EVENT,
@@ -200,7 +200,7 @@ class Runner:
         self.player = Player()
         manager = Manager()
         self.electricPanel = ElectricPanel()
-        self.CanInteractIndicator = CanInteractIndicator()
+        self.CanInteractIndicator = InteractionIndicator()
         conveyor_belt = ConveyorBelt(500, 350)
         self.all_sprites.add(conveyor_belt)
         self.all_sprites.add(self.CanInteractIndicator)
