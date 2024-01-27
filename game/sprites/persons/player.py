@@ -44,7 +44,7 @@ walkRightFiles = [
     "PlayerR7.png",
     "PlayerR8.png",
 ]
-PLAYER_TIME_TO_INTERACT = 3
+PLAYER_TIME_TO_INTERACT = 2
 
 
 class Player(Person):
@@ -64,7 +64,7 @@ class Player(Person):
         self.interactWith = Person()
         self.timeToInteract = PLAYER_TIME_TO_INTERACT
         self.isWalking = False
-        self.walkCount = 9
+        self.walkCount = 8
         self.isCaught = False
         self.velocity = 5
         self.direction = Direction.up
@@ -79,7 +79,7 @@ class Player(Person):
         if not self.isInteracting:
             self.isWalking = True
             self.direction = Direction.left
-            self.surface = self.walkLeftnAnim[self.walkCount // 8][0]
+            self.surface = self.walkLeftnAnim[self.walkCount % 8][0]
             self.walkCount -= 1
             if self.rect.left > self.area.left:
                 self.rect.move_ip(-self.velocity, 0)
@@ -88,7 +88,7 @@ class Player(Person):
         if not self.isInteracting:
             self.isWalking = True
             self.direction = Direction.right
-            self.surface = self.walkRightAnim[self.walkCount // 8][0]
+            self.surface = self.walkRightAnim[self.walkCount % 8][0]
             self.walkCount -= 1
             if self.rect.right < self.area.right:
                 self.rect.move_ip(self.velocity, 0)
@@ -97,7 +97,7 @@ class Player(Person):
         if not self.isInteracting:
             self.isWalking = True
             self.direction = Direction.up
-            self.surface = self.walkUpAnim[self.walkCount // 8][0]
+            self.surface = self.walkUpAnim[self.walkCount % 8][0]
             self.walkCount -= 1
             if self.rect.top < self.area.top:
                 self.rect.move_ip(0, self.velocity)
@@ -108,7 +108,7 @@ class Player(Person):
         if not self.isInteracting:
             self.isWalking = True
             self.direction = Direction.down
-            self.surface = self.walkDownAnim[self.walkCount // 8][0]
+            self.surface = self.walkDownAnim[self.walkCount % 8][0]
             self.walkCount -= 1
             if self.rect.bottom < self.area.bottom:
                 self.rect.move_ip(0, self.velocity)
