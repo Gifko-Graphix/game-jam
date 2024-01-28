@@ -137,13 +137,13 @@ class Runner:
         # start the music 
         play_bg_music()
 
-        font = pygame.font.SysFont("Roboto Bold", 50)
+        font = pygame.font.SysFont("Daydream", 50)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100))
         self.screen.fill((100, 13, 20))
         self.screen.blit(surface, rect)
 
-        font = pygame.font.SysFont("Roboto Bold", 30)
+        font = pygame.font.SysFont("Daydream", 30)
         surface = font.render("Press ENTER to start", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.screen.blit(surface, rect)
@@ -161,14 +161,14 @@ class Runner:
 
     def info_screen_controls(self) -> None:
         """Show the info Screen."""
-        font = pygame.font.SysFont("Roboto Bold", 44)
+        font = pygame.font.SysFont("Daydream", 44)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, 50))
         self.screen.fill((100, 13, 20))
         self.screen.blit(surface, rect)
 
         # add game instructions
-        font = pygame.font.SysFont("Roboto", 28)
+        font = pygame.font.SysFont("Daydream", 20)
         surface = font.render("Controls", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 120))
         self.screen.blit(surface, rect)
@@ -179,10 +179,10 @@ class Runner:
         ESC = Quit Game
         """
 
-        font = pygame.font.SysFont("Roboto", 24)
+        font = pygame.font.SysFont("Daydream", 12)
         for idx, line in enumerate(controls.splitlines()):
             surface = font.render(line, True, colors.WHITE)
-            rect = surface.get_rect(topleft=(50, 120+ idx*30))
+            rect = surface.get_rect(topleft=(0, 120+ idx*30))
             self.screen.blit(surface, rect)
 
         win_lose_cond = """
@@ -192,7 +192,7 @@ class Runner:
 
         for idx, line in enumerate(win_lose_cond.splitlines()):
             surface = font.render(line, True, colors.WHITE)
-            rect = surface.get_rect(topleft=(50, 250+ idx*30))
+            rect = surface.get_rect(topleft=(0, 250+ idx*30))
             self.screen.blit(surface, rect)
 
         # win condition (manager frustration)
@@ -200,7 +200,7 @@ class Runner:
         # electric panel (works only once, takes longest to activate)
         # workers when distracted have varying effects on manager frustration
 
-        font = pygame.font.SysFont("Roboto Bold", 20)
+        font = pygame.font.SysFont("Daydream", 20)
         surface = font.render("Press ENTER to continue", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 200))
         self.screen.blit(surface, rect)
@@ -220,7 +220,7 @@ class Runner:
         if not mixer.music.get_busy():
             play_bg_music()
 
-        font = pygame.font.SysFont("Roboto Bold", 44)
+        font = pygame.font.SysFont("Daydream", 30)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 150))
         self.screen.fill((100, 13, 20))
@@ -238,13 +238,13 @@ class Runner:
         Let’s follow her adventure as she fights the system ✊
         """  # noqa: RUF001
 
-        font = pygame.font.SysFont("Roboto", 24)
+        font = pygame.font.SysFont("Daydream", 10)
         for idx, line in enumerate(story.splitlines()):
             surface = font.render(line, True, colors.WHITE)
-            rect = surface.get_rect(topleft=(50, 100+ idx*30))
+            rect = surface.get_rect(topleft=(0, 100+ idx*30))
             self.screen.blit(surface, rect)
 
-        font = pygame.font.SysFont("Roboto Bold", 20)
+        font = pygame.font.SysFont("Daydream", 10)
         surface = font.render("Press ENTER to continue", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 200))
         self.screen.blit(surface, rect)
@@ -282,13 +282,13 @@ class Runner:
                 mixer.music.stop()
                 mixer.music.load('assets/lose.wav')
                 mixer.music.play()
-        font = pygame.font.SysFont("Roboto Bold", 50)
+        font = pygame.font.SysFont("Daydream", 30)
         surface = font.render(message, True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100))
         self.screen.fill((100, 13, 20))
         self.screen.blit(surface, rect)
 
-        font = pygame.font.SysFont("Roboto Bold", 30)
+        font = pygame.font.SysFont("Daydream", 15)
         surface = font.render(
             "Press ENTER to play again, or Q to quit", True, colors.WHITE
         )

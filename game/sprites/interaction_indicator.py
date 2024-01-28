@@ -10,7 +10,7 @@ class InteractionIndicator(Sprite):
         self.displayText = self.text
         self.surface = Surface((100, 20))
         self.surface.fill((100, 200, 100))
-        self.font = font.SysFont("Roboto", 24)
+        self.font = font.SysFont("Daydream", 10)
         screen = display.get_surface()
         self.rect = self.surface.get_rect(
             center=(screen.get_width() / 2 - 50, screen.get_height() - 50)
@@ -21,7 +21,7 @@ class InteractionIndicator(Sprite):
 
     def checkForAnyPossibleInteract(self, sprites, player):
         if player.isInteracting:
-            self.displayText = "performing action..."
+            self.displayText = "casting spell..."
         else:
             for sprite in sprites:
                 if sprite.canInteract:
