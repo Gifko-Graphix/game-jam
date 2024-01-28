@@ -52,7 +52,6 @@ class Runner:
         self.managers = SpriteGroup()
         self.meters = SpriteGroup()
         self.level_timer = Timer()
-        self.all_sprites.add(self.level_timer)
         self.player_win = False
         self.game_over = False
         self.CanInteractIndicator = None
@@ -157,7 +156,7 @@ class Runner:
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_RETURN]:
-                self.info_screen_controls()
+                self.info_screen_story()
             if keys[pygame.K_ESCAPE]:
                 self.end()
 
@@ -175,19 +174,29 @@ class Runner:
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 120))
         self.screen.blit(surface, rect)
         # movement instructions (Up/down/left/right)
-        instructions = """
+        controls = """
         Arrow keys (Up/Down/Left/Right) =  Movement
         Space Bar = Interact with objects/People in the level to cause chaos
         ESC = Quit Game
         """
 
         font = pygame.font.SysFont("Roboto", 28)
-        for idx, line in enumerate(instructions.splitlines()):
+        for idx, line in enumerate(controls.splitlines()):
             surface = font.render(line, True, colors.WHITE)
-            rect = surface.get_rect(topleft=(50, SCREEN_HEIGHT / 2 - 100+ idx*30))
+            rect = surface.get_rect(topleft=(50, 120+ idx*30))
             self.screen.blit(surface, rect)
 
-        # interactions (space)
+        win_lose_cond = """
+        Fill up the Manager's frustration meter to win the game.
+        You lose when the timer runs out or when the Manager catches you.
+        """
+
+        font = pygame.font.SysFont("Roboto", 28)
+        for idx, line in enumerate(win_lose_cond.splitlines()):
+            surface = font.render(line, True, colors.WHITE)
+            rect = surface.get_rect(topleft=(50, 120+ idx*30))
+            self.screen.blit(surface, rect)
+
         # win condition (manager frustration)
         # lose condition (timer, get caught by manager)
         # electric panel (works only once, takes longest to activate)
@@ -208,7 +217,7 @@ class Runner:
                     if e.key == pygame.K_ESCAPE:
                         self.end()
     
-    def info_screen_story (self) -> None:
+    def info_screen_story(self) -> None:
         """Show the info Screen."""
         font = pygame.font.SysFont("Roboto Bold", 44)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
@@ -216,17 +225,10 @@ class Runner:
         self.screen.fill((135, 205, 245))
         self.screen.blit(surface, rect)
 
-        # add game instructions
-        font = pygame.font.SysFont("Roboto", 28)
-        surface = font.render("Controls", True, colors.WHITE)
-        rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 120))
-        self.screen.fill((135, 205, 245))
-        self.screen.blit(surface, rect)
-        # movement instructions (Up/down/left/right)
+        # story
         instructions = """
-        Arrow keys (Up/Down/Left/Right) =  Movement
-        Space Bar = Interact with objects/People in the level to cause chaos
-        ESC = Quit Game
+       We are Agents of Chaos. We are here to cause chaos in the factory.
+       Interact with the workers and the electric panel to cause chaos.
         """
 
         font = pygame.font.SysFont("Roboto", 28)
@@ -234,12 +236,6 @@ class Runner:
             surface = font.render(line, True, colors.WHITE)
             rect = surface.get_rect(topleft=(50, SCREEN_HEIGHT / 2 - 100+ idx*30))
             self.screen.blit(surface, rect)
-
-        # interactions (space)
-        # win condition (manager frustration)
-        # lose condition (timer, get caught by manager)
-        # electric panel (works only once, takes longest to activate)
-        # workers when distracted have varying effects on manager frustration
 
         font = pygame.font.SysFont("Roboto Bold", 30)
         surface = font.render("Press ENTER to continue", True, colors.WHITE)
@@ -252,7 +248,7 @@ class Runner:
                     self.end()
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_RETURN:
-                        self.start_round()
+                        self.info_screen_controls()
                     if e.key == pygame.K_ESCAPE:
                         self.end()
 
@@ -331,6 +327,7 @@ class Runner:
 
         self.meters.add(manager.meter)
 
+        self.all_sprites.add(self.level_timer)
         self.all_sprites.add(self.player)
         self.all_sprites.add(manager.meter)
         self.all_sprites.add(self.electricPanel)
