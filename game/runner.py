@@ -132,13 +132,17 @@ class Runner:
                 self.game_over = True
                 self.running = False
 
-    def start(self) -> None:
-        """Show the start Screen."""
-        # start the music 
+    def start_bg_music(self):
+        """Start the background music."""
         mixer.init()
         mixer.music.load('assets/background_music.mp3')
         mixer.music.play()
-        
+    
+    def start(self) -> None:
+        """Show the start Screen."""
+        # start the music 
+        self.start_bg_music()
+
         font = pygame.font.SysFont("Roboto Bold", 50)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100))
@@ -220,6 +224,7 @@ class Runner:
     
     def info_screen_story(self) -> None:
         """Show the info Screen."""
+        self.start_bg_music()
         font = pygame.font.SysFont("Roboto Bold", 44)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 150))
@@ -229,15 +234,19 @@ class Runner:
         # story
         story = """
         In a world ravaged by processes, supply chain and the worst of them all … AI
-        We the AOC League (Agent of Chaos) League have decided to infiltrate those companies that have embraced automation and tear them to the ground mwa-ah-ah
-        One of our trusted leaders has infiltrated the company at the top of our list. They are renowned for intricate process automation, down to accurate output per second predictions per worker — Noita-Motua GmbH. 
-        Let’s follow her adventure as she fights the system(fist raised emoji)
+        We the AOC League (Agent of Chaos) League have decided to infiltrate those 
+        companies that have embraced automation and tear them to the ground 
+        mwa-ha-ha 😈
+        One of our trusted leaders has infiltrated the company at the top of our list. 
+        They are renowned for intricate process automation, down to accurate 
+        output per second predictions per worker — Noita-Motua GmbH. 
+        Let’s follow her adventure as she fights the system ✊
         """
 
         font = pygame.font.SysFont("Roboto", 28)
         for idx, line in enumerate(story.splitlines()):
             surface = font.render(line, True, colors.WHITE)
-            rect = surface.get_rect(topleft=(50, SCREEN_HEIGHT / 2 - 100+ idx*30))
+            rect = surface.get_rect(topleft=(0, 100+ idx*30))
             self.screen.blit(surface, rect)
 
         font = pygame.font.SysFont("Roboto Bold", 30)
@@ -304,9 +313,8 @@ class Runner:
                 self.playerInteractables.empty()
                 self.managers.empty()
                 self.meters.empty()
+                self.info_screen_story()
                 self.start_round()
-                self.init(level_params=levels[0])
-                self.main_loop()
             if keys[pygame.K_q]:
                 showEndScreen = False
                 self.stop()
@@ -321,6 +329,7 @@ class Runner:
 
     def init(self, level_params: LevelParameters):
         """Initialize the game."""
+        self.start_bg_music()
         
         self.player = Player(level_params.player)
         manager = Manager(level_params.manager)
