@@ -54,9 +54,6 @@ class Runner:
         self.game_over = False
         self.CanInteractIndicator = None
         self.conveyor_belt = None
-        mixer.init()
-        mixer.music.load('assets/background_music.mp3')
-        mixer.music.play()
 
     def _update_level_timer(self) -> None:
         """Update the level timer."""
@@ -137,6 +134,11 @@ class Runner:
 
     def start(self) -> None:
         """Show the start Screen."""
+        # start the music 
+        mixer.init()
+        mixer.music.load('assets/background_music.mp3')
+        mixer.music.play()
+        
         font = pygame.font.SysFont("Roboto Bold", 50)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100))
@@ -267,6 +269,13 @@ class Runner:
             message = "Quit Game?"
         else:
             message = "You Win!" if player_won else "You Lose!"
+        if player_won is not None:
+            if player_won:
+                pass
+            else:
+                mixer.music.stop()
+                mixer.music.load('assets/lose.wav')
+                mixer.music.play()
         font = pygame.font.SysFont("Roboto Bold", 50)
         surface = font.render(message, True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100))
@@ -312,6 +321,7 @@ class Runner:
 
     def init(self, level_params: LevelParameters):
         """Initialize the game."""
+        
         self.player = Player(level_params.player)
         manager = Manager(level_params.manager)
         self.electricPanel = ElectricPanel(level_params.environment.electric_panel)
