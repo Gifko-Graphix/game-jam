@@ -180,7 +180,7 @@ class Runner:
         ESC = Quit Game
         """
 
-        font = pygame.font.SysFont("Roboto", 28)
+        font = pygame.font.SysFont("Roboto", 24)
         for idx, line in enumerate(controls.splitlines()):
             surface = font.render(line, True, colors.WHITE)
             rect = surface.get_rect(topleft=(50, 120+ idx*30))
@@ -191,7 +191,6 @@ class Runner:
         You lose when the timer runs out or when the Manager catches you.
         """
 
-        font = pygame.font.SysFont("Roboto", 28)
         for idx, line in enumerate(win_lose_cond.splitlines()):
             surface = font.render(line, True, colors.WHITE)
             rect = surface.get_rect(topleft=(50, 250+ idx*30))
@@ -202,7 +201,7 @@ class Runner:
         # electric panel (works only once, takes longest to activate)
         # workers when distracted have varying effects on manager frustration
 
-        font = pygame.font.SysFont("Roboto Bold", 30)
+        font = pygame.font.SysFont("Roboto Bold", 20)
         surface = font.render("Press ENTER to continue", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 200))
         self.screen.blit(surface, rect)
@@ -240,13 +239,13 @@ class Runner:
         Let’s follow her adventure as she fights the system ✊
         """  # noqa: RUF001
 
-        font = pygame.font.SysFont("Roboto", 28)
+        font = pygame.font.SysFont("Roboto", 24)
         for idx, line in enumerate(story.splitlines()):
             surface = font.render(line, True, colors.WHITE)
-            rect = surface.get_rect(topleft=(0, 100+ idx*30))
+            rect = surface.get_rect(topleft=(50, 100+ idx*30))
             self.screen.blit(surface, rect)
 
-        font = pygame.font.SysFont("Roboto Bold", 30)
+        font = pygame.font.SysFont("Roboto Bold", 20)
         surface = font.render("Press ENTER to continue", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 200))
         self.screen.blit(surface, rect)

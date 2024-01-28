@@ -75,6 +75,7 @@ class Manager(Person):
         self.velocity = 5
         self.is_frustrated = False
         self.meter = Meter()
+        self.speed = 5
         self.current_corner = 0
         self.direction = Direction.up
         self.walk_path = params.walk_path
@@ -83,6 +84,8 @@ class Manager(Person):
         """Update manager sprite."""
         # Calculate the movement towards the current corner
         self.isWalking = True
+        if self.meter.progress > 0.8:
+            self.speed = 6.5
         if self.isWalking:
             if self.walkCount == 0:
                 self.walkCount = 8
@@ -110,12 +113,12 @@ class Manager(Person):
             if self.direction == Direction.right:
                 self.surface = self.idleRight[0]
 
-        if distance > speed:
+        if distance > self.speed:
             # Normalize the direction vector
             direction = (dx / distance, dy / distance)
             # Move the rectangle
-            self.rect.x += int(direction[0] * speed)
-            self.rect.y += int(direction[1] * speed)
+            self.rect.x += int(direction[0] * self.speed)
+            self.rect.y += int(direction[1] * self.speed)
             self.pseudo_rect.center = self.rect.center
         else:
             # Move to the next corner
