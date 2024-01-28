@@ -1,11 +1,9 @@
 from typing import Optional
 
 import pygame
-from pygame import display, event, font, time
+from pygame import display, event, font, mixer, time
 from pygame.locals import K_ESCAPE, KEYDOWN
 from pygame.sprite import Group as SpriteGroup
-from pygame.locals import *
-from pygame import mixer
 
 import game.colors as colors
 from game.defs import (
@@ -194,7 +192,7 @@ class Runner:
         font = pygame.font.SysFont("Roboto", 28)
         for idx, line in enumerate(win_lose_cond.splitlines()):
             surface = font.render(line, True, colors.WHITE)
-            rect = surface.get_rect(topleft=(50, 120+ idx*30))
+            rect = surface.get_rect(topleft=(50, 250+ idx*30))
             self.screen.blit(surface, rect)
 
         # win condition (manager frustration)
