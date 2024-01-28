@@ -133,7 +133,7 @@ class Player(Person):
                 pg.time.set_timer(PLAYER_TRIGGER_INTERACTION, 1000)
                 self.isInteracting = True
                 self.interactWith = sprite
-                self.timeToInteract = PLAYER_TIME_TO_INTERACT
+                self.timeToInteract = 3 if hasattr(sprite, "isOneTime") else PLAYER_TIME_TO_INTERACT
 
     def checkInteractTimer(self):
         if self.isInteracting:
