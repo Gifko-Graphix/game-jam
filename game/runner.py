@@ -149,9 +149,16 @@ class Runner:
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_RETURN]:
-                break
+                self.start_round()
             if keys[pygame.K_ESCAPE]:
                 self.end()
+
+    def start_round(self):
+        self.init()
+        self.game_over = False
+        self.running = True
+        self.player_win = None
+        self.main_loop()
 
     def end(self, player_won: Optional[bool] = None) -> None:
         """Show the stop Screen."""
@@ -172,29 +179,29 @@ class Runner:
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.screen.blit(surface, rect)
         display.flip()
-        while True:
+        showEndScreen = True
+        while showEndScreen:
             for e in event.get():
                 if e.type == pygame.QUIT:
-                    self.end()
+                    showEndScreen = False
+                    self.stop()
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_RETURN]:
+                showEndScreen = False
                 self.all_sprites.empty()
-                self.init()
-                self.main_loop()
+                self.workers.empty()
+                self.playerInteractables.empty()
+                self.managers.empty()
+                self.meters.empty()
+                self.start_round()
             if keys[pygame.K_q]:
+                showEndScreen = False
                 self.stop()
-                break
-
-        # self.stop()
 
     def run(self) -> None:
         """Start the game."""
         self.start()
-
-        self.init()
-        self.main_loop()
-        self.end()
 
     def init(self):
         """Initialize the game."""
