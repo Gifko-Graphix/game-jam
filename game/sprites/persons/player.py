@@ -1,6 +1,7 @@
 import pygame as pg
 
 from game.defs import PLAYER_TRIGGER_INTERACTION, Direction
+from game.levels.parameters import PlayerParameters
 from game.sprites.persons.person import Person
 from utils.loader import load_image
 
@@ -48,13 +49,14 @@ PLAYER_TIME_TO_INTERACT = 2
 
 
 class Player(Person):
-    def __init__(self):
+    def __init__(self, params: PlayerParameters):
         Person.__init__(self)
         self.surface, self.rect = load_image("PlayerL.png", -1, scale=1)
         self.walkUpAnim = [load_image(file, -1, 1) for file in walkUpFiles]
         self.walkDownAnim = [load_image(file, -1, 1) for file in walkDownFiles]
         self.walkLeftAnim = [load_image(file, -1, 1) for file in walkLeftFiles]
         self.walkRightAnim = [load_image(file, -1, 1) for file in walkRightFiles]
+        self.area = pg.Rect(100, 100, 600, 300)
 
         self.idleUp = load_image("PlayerB.png", -1, 1)
         self.idleDown = load_image("PlayerF.png", -1, 1)
@@ -68,7 +70,7 @@ class Player(Person):
         self.isCaught = False
         self.velocity = 5
         self.direction = Direction.up
-        self.rect.topleft = 90, 600
+        self.rect.topleft = params.position
 
     def interact(self, sprite: Person):
         sprite.foo_action()

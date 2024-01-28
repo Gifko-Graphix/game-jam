@@ -1,10 +1,10 @@
 import pygame as pg
 
 from game.defs import WORKER_TIMER_EVENT, Direction, WorkerState
+from game.levels.parameters import WorkerParameters
 from game.sprites.persons.person import Person
 from game.sprites.persons.player import Player
 from utils.loader import load_image
-import random
 
 DISTRACTION_TIME_SECONDS = 40
 WORKER_DISTRACTION_TIMES = [20, 40, 60]
@@ -63,16 +63,16 @@ workerDistractedFiles = [Worker1DistractedFiles, Worker2DistractedFiles, Worker3
 
 
 class Worker(Person):
-    def __init__(self, x: int, y: int, workerType: 0 | 1| 2) -> None:
+    def __init__(self, params: WorkerParameters) -> None:
         super().__init__()
         self.surface, self.rect = load_image("Worker1BS.png", -1)
         self.interactDisplayText = "press SPACE to distract worker"
         self.state = WorkerState.working
         self.direction = Direction.up
-        self.workerType = workerType
+        self.workerType = params.worker_type
         self.workerBusyAnim = [load_image(file, -1, 1) for file in workerWorkingFiles[self.workerType]]
         self.workerDistractedAnim = [load_image(file, -1, 1) for file in workerDistractedFiles[self.workerType]]
-        self.rect.topleft = (x, y)
+        self.rect.topleft = params.position
         self.distractedTimerValue = WORKER_DISTRACTION_TIMES[self.workerType]
         self.hitbox = self.rect.scale_by(2, 2)
         self.animCount = 20

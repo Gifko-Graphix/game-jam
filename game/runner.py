@@ -1,9 +1,15 @@
 from typing import Optional  # noqa: I001
 
 import pygame
-from pygame import display, event, time
-from pygame.locals import K_ESCAPE, KEYDOWN
+from pygame import display, event, time, font
+from pygame.locals import (
+    K_ESCAPE,
+    KEYDOWN,
+    K_RETURN
+)
 from pygame.sprite import Group as SpriteGroup
+from game.levels.parameters import LevelParameters
+from game.levels.list import levels
 from game.sprites.interaction_indicator import InteractionIndicator
 
 from game.defs import (
@@ -33,6 +39,7 @@ class Runner:
         """Initialize the game."""
         # pygame setup
         pygame.init()
+        font.init()
         pygame.display.set_caption("Agents of Chaos")
         self.screen = display.set_mode(
             (SCREEN_WIDTH, SCREEN_HEIGHT),
@@ -147,7 +154,7 @@ class Runner:
                 if e.type == pygame.QUIT:
                     self.end()
             keys = pygame.key.get_pressed()
-
+            
             if keys[pygame.K_RETURN]:
                 self.start_round()
             if keys[pygame.K_ESCAPE]:
@@ -173,9 +180,7 @@ class Runner:
         self.screen.blit(surface, rect)
 
         font = pygame.font.SysFont("Roboto Bold", 30)
-        surface = font.render(
-            "Press ENTER to play again, or Q to quit", True, colors.WHITE
-        )
+        surface = font.render("Press ENTER to play again, or Q to quit", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.screen.blit(surface, rect)
         display.flip()
@@ -186,7 +191,7 @@ class Runner:
                     showEndScreen = False
                     self.stop()
             keys = pygame.key.get_pressed()
-
+            
             if keys[pygame.K_RETURN]:
                 showEndScreen = False
                 self.all_sprites.empty()
@@ -195,6 +200,8 @@ class Runner:
                 self.managers.empty()
                 self.meters.empty()
                 self.start_round()
+                self.init(level_params=levels[0])
+                self.main_loop()
             if keys[pygame.K_q]:
                 showEndScreen = False
                 self.stop()
@@ -203,20 +210,22 @@ class Runner:
         """Start the game."""
         self.start()
 
-    def init(self):
+        self.init(level_params=levels[0])
+        self.main_loop()
+        self.end()
+
+    def init(self, level_params: LevelParameters):
         """Initialize the game."""
-        self.player = Player()
-        manager = Manager()
-        self.electricPanel = ElectricPanel()
+        self.player = Player(level_params.player)
+        manager = Manager(level_params.manager)
+        self.electricPanel = ElectricPanel(level_params.environment.electric_panel)
         self.CanInteractIndicator = InteractionIndicator()
-        conveyor_belt = ConveyorBelt(500, 350)
+        conveyor_belt = ConveyorBelt(level_params.environment.conveyor_belt)
         self.all_sprites.add(conveyor_belt)
         self.all_sprites.add(self.CanInteractIndicator)
 
-        worker_y = 350
-        worker_coords_list = [(300, worker_y, 0), (400, worker_y, 1), (550, worker_y, 2)]
-        for coords in worker_coords_list:
-            worker = Worker(*coords)
+        for params in level_params.environment.workers:
+            worker = Worker(*params.position)
             self.all_sprites.add(worker)
             self.workers.add(worker)
             self.playerInteractables.add(worker)
@@ -279,11 +288,9 @@ class Runner:
                 worker.detectPlayer(self.player)
             self.electricPanel.detectPlayer(self.player)
             self.managers.update()
-            self.CanInteractIndicator.checkForAnyPossibleInteract(
-                self.playerInteractables, self.player
-            )
+            self.CanInteractIndicator.checkForAnyPossibleInteract(self.playerInteractables, self.player)
             self.CanInteractIndicator.update()
-
+    
             # check for collisions
             self.check_collisions()
 

@@ -1,18 +1,14 @@
 """Manager Sprite."""
 
 from game.defs import Direction
+from game.levels.parameters import ManagerParameters
 from game.sprites.persons.person import Person
 from game.sprites.shared.meters import Meter
 from utils.loader import load_image
 
 # Bottom-left corner
-corner_positions = [
-    (100, 100, Direction.up),  # Top-left corner
-    (200, 100, Direction.right),  # Top-right corner
-    (200, 250, Direction.down),  # Top-right corner
-    (800, 250, Direction.right),  # Bottom-right corner
-    (800, 450, Direction.down),  # Bottom-left corner
-    (100, 450, Direction.left),  # Bottom-left corner
+walk_path = [
+
 ]
 
 # Object parameters
@@ -63,10 +59,10 @@ M_walkRightFiles = [
 class Manager(Person):
     """Player Sprite"""
 
-    def __init__(self):
+    def __init__(self, params: ManagerParameters):
         super(Manager, self).__init__()
         self.surface, self.rect = load_image("ManagerR.png", -1, 1)
-        self.pseudo_rect = self.rect.scale_by(4, 4)
+        self.pseudo_rect = self.rect.scale_by(3, 3)
         self.walkUpAnim = [load_image(file, -1, 1) for file in M_walkUpFiles]
         self.walkDownAnim = [load_image(file, -1, 1) for file in M_walkDownFiles]
         self.walkLeftAnim = [load_image(file, -1, 1) for file in M_walkLeftFiles]
@@ -83,6 +79,7 @@ class Manager(Person):
         self.meter = Meter()
         self.current_corner = 0
         self.direction = Direction.up
+        self.walk_path = params.walk_path
 
     def update(self):
         """Update manager sprite."""
@@ -99,7 +96,7 @@ class Manager(Person):
                 self.surface = self.walkLeftAnim[self.walkCount % 8][0]
             elif self.direction == Direction.right:
                 self.surface = self.walkRightAnim[self.walkCount % 8][0]
-            corner_x, corner_y, direction = corner_positions[self.current_corner]
+            corner_x, corner_y, direction = self.walk_path[self.current_corner]
             self.direction = direction
             dx = corner_x - self.rect.x
             dy = corner_y - self.rect.y
@@ -124,6 +121,6 @@ class Manager(Person):
             self.pseudo_rect.center = self.rect.center
         else:
             # Move to the next corner
-            self.current_corner = (self.current_corner + 1) % len(corner_positions)
+            self.current_corner = (self.current_corner + 1) % len(self.walk_path)
 
         self.meter.update_position(self.rect.x, self.rect.y)
