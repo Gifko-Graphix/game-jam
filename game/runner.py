@@ -53,6 +53,7 @@ class Runner:
         self.player_win = False
         self.game_over = False
         self.CanInteractIndicator = None
+        self.conveyor_belt = None
         mixer.init()
         mixer.music.load('assets/background_music.mp3')
         mixer.music.play()
@@ -315,8 +316,8 @@ class Runner:
         manager = Manager(level_params.manager)
         self.electricPanel = ElectricPanel(level_params.environment.electric_panel)
         self.CanInteractIndicator = InteractionIndicator()
-        conveyor_belt = ConveyorBelt(level_params.environment.conveyor_belt)
-        self.all_sprites.add(conveyor_belt)
+        self.conveyor_belt = ConveyorBelt(level_params.environment.conveyor_belt)
+        self.all_sprites.add(self.conveyor_belt)
         self.all_sprites.add(self.CanInteractIndicator)
 
         for params in level_params.environment.workers:
@@ -332,7 +333,7 @@ class Runner:
         self.all_sprites.add(manager.meter)
         self.all_sprites.add(self.electricPanel)
         self.playerInteractables.add(self.electricPanel)
-        self.playerInteractables.add(conveyor_belt)
+        self.playerInteractables.add(self.conveyor_belt)
         self.all_sprites.add(worker)
         self.all_sprites.add(manager)
 
@@ -384,6 +385,7 @@ class Runner:
                 worker.detectPlayer(self.player)
             self.electricPanel.detectPlayer(self.player)
             self.managers.update()
+            self.conveyor_belt.update()
             self.CanInteractIndicator.checkForAnyPossibleInteract(
                 self.playerInteractables, self.player
             )
