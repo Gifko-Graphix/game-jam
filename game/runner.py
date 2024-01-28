@@ -321,11 +321,14 @@ class Runner:
 
     def run(self) -> None:
         """Start the game."""
-        self.start()
+        try:
+            self.start()
 
-        self.init(level_params=levels[0])
-        self.main_loop()
-        self.end()
+            self.init(level_params=levels[0])
+            self.main_loop()
+            self.end()
+        except pygame.error:
+            self.stop()
 
     def init(self, level_params: LevelParameters):
         """Initialize the game."""
