@@ -88,7 +88,7 @@ class Worker(Person):
 
 
     def detectPlayer(self, player: Player) -> None:
-        if self.hitbox.colliderect(player.rect):
+        if self.hitbox.colliderect(player.rect) and self.state == WorkerState.working:
             self.canInteract = True
         else:
             self.canInteract = False
