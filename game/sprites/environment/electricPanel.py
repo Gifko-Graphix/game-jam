@@ -13,6 +13,8 @@ class ElectricPanel(pg.sprite.Sprite):
         super().__init__()
         self.surface, self.rect = load_image("star.png", -1, 0.025)
         self.isOn = True
+        self.isOneTime = True
+        self.isBroken = False
         self.canInteract = False
         self.rect.topleft = params.position
         self.hitbox = self.rect.scale_by(2, 2)
@@ -24,13 +26,14 @@ class ElectricPanel(pg.sprite.Sprite):
         pass
 
     def detectPlayer(self, player: Player) -> None:
-        if self.hitbox.colliderect(player.rect):
+        if self.hitbox.colliderect(player.rect) and not self.isBroken:
             self.canInteract = True
         else:
             self.canInteract = False
 
     def foo_action(self):
         self.isOn = False
+        self.isBroken = True
         self.countdownTimerValue = OFF_TIME_SECONDS
         pg.time.set_timer(ELECTRIC_PANEL_TIMER_EVENT, 100)
 
