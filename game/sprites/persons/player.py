@@ -63,7 +63,8 @@ class Player(Person):
         self.idleLeft = load_image("PlayerL.png", -1, 1)
         self.idleRight = load_image("PlayerR.png", -1, 1)
         self.isInteracting = False
-        self.interactWith = Person()
+        self.interactWith = None
+        self.allInteractables = None
         self.timeToInteract = PLAYER_TIME_TO_INTERACT
         self.isWalking = False
         self.walkCount = 8
@@ -73,7 +74,10 @@ class Player(Person):
         self.rect.topleft = params.position
 
     def interact(self, sprite: Person):
-        sprite.foo_action()
+        if hasattr(sprite, "isBroken"):
+            sprite.foo_action(self.allInteractables)
+        else:
+            sprite.foo_action()
 
     def walkLeft(self):
         if not self.isInteracting:
@@ -128,6 +132,7 @@ class Player(Person):
                 self.surface = self.idleRight[0]
 
     def triggerInteractionDelay(self, allInteractables):
+        self.allInteractables = allInteractables
         for sprite in allInteractables:
             if sprite.canInteract:
                 pg.time.set_timer(PLAYER_TRIGGER_INTERACTION, 1000)
