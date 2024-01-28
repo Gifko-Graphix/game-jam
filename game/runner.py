@@ -221,7 +221,7 @@ class Runner:
                         self.start_round()
                     if e.key == pygame.K_ESCAPE:
                         self.end()
-    
+     
     def info_screen_story(self) -> None:
         """Show the info Screen."""
         self.start_bg_music()
