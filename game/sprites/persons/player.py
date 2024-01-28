@@ -45,6 +45,13 @@ walkRightFiles = [
     "PlayerR7.png",
     "PlayerR8.png",
 ]
+
+interactionFiles = [
+    "PlayerL.png",
+    "PlayerD1.png",
+    "PlayerD2.png",
+    "PlayerD3.png"
+]
 PLAYER_TIME_TO_INTERACT = 2
 
 
@@ -56,6 +63,8 @@ class Player(Person):
         self.walkDownAnim = [load_image(file, -1, 1) for file in walkDownFiles]
         self.walkLeftAnim = [load_image(file, -1, 1) for file in walkLeftFiles]
         self.walkRightAnim = [load_image(file, -1, 1) for file in walkRightFiles]
+        self.interactionAnim = [load_image(file, -1, 1) for file in interactionFiles]
+
         self.area = pg.Rect(100, 100, 600, 300)
 
         self.idleUp = load_image("PlayerB.png", -1, 1)
@@ -72,6 +81,8 @@ class Player(Person):
         self.velocity = 5
         self.direction = Direction.up
         self.rect.topleft = params.position
+        self.animSpeed = 10
+        self.interactCount = len(self.interactionAnim) * self.animSpeed
 
     def interact(self, sprite: Person):
         if hasattr(sprite, "isBroken"):
@@ -118,10 +129,15 @@ class Player(Person):
                 self.rect.move_ip(0, self.velocity)
 
     def update(self):
-        if self.isWalking:
+        if self.isInteracting and not self.isWalking:
+            if self.interactCount <= 0:
+                self.interactCount = len(self.interactionAnim) * self.animSpeed
+            self.surface = self.interactionAnim[(self.interactCount // self.animSpeed) % len(self.interactionAnim)][0]
+            self.interactCount -= 1
+        elif self.isWalking and not self.isInteracting:
             if self.walkCount == 0:
                 self.walkCount = 8
-        else:
+        elif not self.isWalking and not self.isInteracting:
             if self.direction == Direction.up:
                 self.surface = self.idleUp[0]
             if self.direction == Direction.down:
