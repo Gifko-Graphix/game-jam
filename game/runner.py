@@ -224,13 +224,15 @@ class Runner:
         self.screen.blit(surface, rect)
 
         # story
-        instructions = """
-       We are Agents of Chaos. We are here to cause chaos in the factory.
-       Interact with the workers and the electric panel to cause chaos.
+        story = """
+        In a world ravaged by processes, supply chain and the worst of them all … AI
+        We the AOC League (Agent of Chaos) League have decided to infiltrate those companies that have embraced automation and tear them to the ground mwa-ah-ah
+        One of our trusted leaders has infiltrated the company at the top of our list. They are renowned for intricate process automation, down to accurate output per second predictions per worker — Noita-Motua GmbH. 
+        Let’s follow her adventure as she fights the system(fist raised emoji)
         """
 
         font = pygame.font.SysFont("Roboto", 28)
-        for idx, line in enumerate(instructions.splitlines()):
+        for idx, line in enumerate(story.splitlines()):
             surface = font.render(line, True, colors.WHITE)
             rect = surface.get_rect(topleft=(50, SCREEN_HEIGHT / 2 - 100+ idx*30))
             self.screen.blit(surface, rect)
