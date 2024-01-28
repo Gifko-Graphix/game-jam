@@ -207,7 +207,7 @@ class Runner:
         self.all_sprites.add(self.CanInteractIndicator)
 
         worker_y = 350
-        worker_coords_list = [(300, worker_y), (400, worker_y), (550, worker_y)]
+        worker_coords_list = [(300, worker_y, 0), (400, worker_y, 1), (550, worker_y, 2)]
         for coords in worker_coords_list:
             worker = Worker(*coords)
             self.all_sprites.add(worker)
