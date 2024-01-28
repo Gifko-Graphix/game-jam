@@ -4,6 +4,8 @@ import pygame
 from pygame import display, event, font, time
 from pygame.locals import K_ESCAPE, KEYDOWN
 from pygame.sprite import Group as SpriteGroup
+from pygame.locals import *
+from pygame import mixer
 
 import game.colors as colors
 from game.defs import (
@@ -54,6 +56,9 @@ class Runner:
         self.player_win = False
         self.game_over = False
         self.CanInteractIndicator = None
+        mixer.init()
+        mixer.music.load('assets/background_music.mp3')
+        mixer.music.play()
 
     def _update_level_timer(self) -> None:
         """Update the level timer."""
