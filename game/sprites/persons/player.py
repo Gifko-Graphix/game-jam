@@ -48,10 +48,12 @@ walkRightFiles = [
 ]
 
 interactionFiles = [
-    "PlayerL.png",
-    "PlayerD1.png",
-    "PlayerD2.png",
-    "PlayerD3.png"
+    "PlayerSC1.png",
+    "PlayerSC2.png",
+    "PlayerSC3.png",
+    "PlayerSC4.png",
+    "PlayerSC5.png",
+    "PlayerSC6.png",
 ]
 PLAYER_TIME_TO_INTERACT = 2
 
