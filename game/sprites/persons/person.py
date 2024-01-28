@@ -12,9 +12,6 @@ class Person(pg.sprite.Sprite):
         self.velocity = 1
         self.canInteract = False
 
-    def update(self):
-        pass
-
     def willCollide(self, direction: Direction, allsprites):
         if direction == Direction.left:
             nextPos = self.rect.move(-self.velocity, 0)

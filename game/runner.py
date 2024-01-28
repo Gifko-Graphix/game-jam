@@ -25,6 +25,7 @@ from game.sprites.interaction_indicator import InteractionIndicator
 from game.sprites.persons.manager import Manager
 from game.sprites.persons.player import Player
 from game.sprites.persons.worker import Worker
+from game.sprites.shared.sounds import play_bg_music
 from game.sprites.timer import Timer
 
 
@@ -132,16 +133,10 @@ class Runner:
                 self.game_over = True
                 self.running = False
 
-    def start_bg_music(self):
-        """Start the background music."""
-        mixer.init()
-        mixer.music.load('assets/background_music.mp3')
-        mixer.music.play()
-    
     def start(self) -> None:
         """Show the start Screen."""
         # start the music 
-        self.start_bg_music()
+        play_bg_music()
 
         font = pygame.font.SysFont("Roboto Bold", 50)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
@@ -224,7 +219,9 @@ class Runner:
     
     def info_screen_story(self) -> None:
         """Show the info Screen."""
-        self.start_bg_music()
+        if not mixer.music.get_busy():
+            play_bg_music()
+
         font = pygame.font.SysFont("Roboto Bold", 44)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 150))
@@ -241,7 +238,7 @@ class Runner:
         They are renowned for intricate process automation, down to accurate 
         output per second predictions per worker — Noita-Motua GmbH. 
         Let’s follow her adventure as she fights the system ✊
-        """
+        """  # noqa: RUF001
 
         font = pygame.font.SysFont("Roboto", 28)
         for idx, line in enumerate(story.splitlines()):
@@ -280,7 +277,9 @@ class Runner:
             message = "You Win!" if player_won else "You Lose!"
         if player_won is not None:
             if player_won:
-                pass
+                mixer.music.stop()
+                mixer.music.load('assets/win.mp3')
+                mixer.music.play()
             else:
                 mixer.music.stop()
                 mixer.music.load('assets/lose.wav')
@@ -332,7 +331,8 @@ class Runner:
 
     def init(self, level_params: LevelParameters):
         """Initialize the game."""
-        self.start_bg_music()
+        if not mixer.music.get_busy():
+            play_bg_music()
         
         self.player = Player(level_params.player)
         manager = Manager(level_params.manager)
@@ -437,7 +437,4 @@ class Runner:
             self.end(self.player_win)
 
     def stop(self) -> None:
-        try:
-            pygame.quit()
-        except pygame.error:
-            pass
+        pygame.quit()

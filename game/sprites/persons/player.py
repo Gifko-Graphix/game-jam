@@ -3,6 +3,7 @@ import pygame as pg
 from game.defs import PLAYER_TRIGGER_INTERACTION, Direction
 from game.levels.parameters import PlayerParameters
 from game.sprites.persons.person import Person
+from game.sprites.shared.sounds import play_bg_music, play_interaction_sound
 from utils.loader import load_image
 
 walkUpFiles = [
@@ -152,6 +153,7 @@ class Player(Person):
         for sprite in allInteractables:
             if sprite.canInteract:
                 pg.time.set_timer(PLAYER_TRIGGER_INTERACTION, 1000)
+                play_interaction_sound()
                 self.isInteracting = True
                 self.interactWith = sprite
                 self.timeToInteract = 3 if hasattr(sprite, "isOneTime") else PLAYER_TIME_TO_INTERACT
@@ -163,5 +165,6 @@ class Player(Person):
                 self.isInteracting = False
                 self.timeToInteract = PLAYER_TIME_TO_INTERACT
                 self.interact(self.interactWith)
+                play_bg_music()
             else:
                 self.timeToInteract -= 1

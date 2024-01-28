@@ -22,9 +22,6 @@ class ElectricPanel(pg.sprite.Sprite):
         self.hitbox = self.rect.scale_by(2, 2)
         self.interactDisplayText = "press SPACE to switch off Panel"
 
-    def update(self) -> None:
-        pass
-
     def detectPlayer(self, player: Player) -> None:
         if self.hitbox.colliderect(player.rect) and not self.isBroken:
             self.canInteract = True

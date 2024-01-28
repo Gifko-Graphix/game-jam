@@ -1,5 +1,5 @@
 """Conveyor belt sprite class."""
-from pygame import Surface, time, image
+from pygame import Surface, time
 from pygame.sprite import Sprite
 
 from game.defs import ELECTRIC_PANEL_TIMER_EVENT
@@ -7,7 +7,6 @@ from game.levels.parameters import ConveyorBeltParameters
 from game.sprites.environment.electricPanel import OFF_TIME_SECONDS
 from game.sprites.persons.player import Player
 from utils.loader import load_image
-
 
 ConveyorBeltFiles = [
     "LL5.png",
