@@ -9,9 +9,6 @@ from utils.loader import load_image
 # Bottom-left corner
 walk_path = []
 
-# Object parameters
-speed = 5  # Adjust speed as needed
-
 M_walkUpFiles = [
     "ManagerB1.png",
     "ManagerB2.png",
@@ -85,7 +82,10 @@ class Manager(Person):
         # Calculate the movement towards the current corner
         self.isWalking = True
         if self.meter.progress > 0.8:
-            self.speed = 6.5
+            self.speed = 6.25
+        else:
+            self.speed = 5
+
         if self.isWalking:
             if self.walkCount == 0:
                 self.walkCount = 8
