@@ -146,7 +146,7 @@ class Runner:
         font = pygame.font.SysFont("Roboto Bold", 50)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100))
-        self.screen.fill((135, 205, 245))
+        self.screen.fill((100, 13, 20))
         self.screen.blit(surface, rect)
 
         font = pygame.font.SysFont("Roboto Bold", 30)
@@ -170,7 +170,7 @@ class Runner:
         font = pygame.font.SysFont("Roboto Bold", 44)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, 50))
-        self.screen.fill((135, 205, 245))
+        self.screen.fill((100, 13, 20))
         self.screen.blit(surface, rect)
 
         # add game instructions
@@ -228,7 +228,7 @@ class Runner:
         font = pygame.font.SysFont("Roboto Bold", 44)
         surface = font.render("Agents of Chaos", True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 150))
-        self.screen.fill((135, 205, 245))
+        self.screen.fill((100, 13, 20))
         self.screen.blit(surface, rect)
 
         # story
@@ -288,7 +288,7 @@ class Runner:
         font = pygame.font.SysFont("Roboto Bold", 50)
         surface = font.render(message, True, colors.WHITE)
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100))
-        self.screen.fill((135, 205, 245))
+        self.screen.fill((100, 13, 20))
         self.screen.blit(surface, rect)
 
         font = pygame.font.SysFont("Roboto Bold", 30)
@@ -417,7 +417,7 @@ class Runner:
             self.check_win_state()
 
             # bg color
-            self.screen.fill((135, 205, 245))
+            self.screen.fill((100, 13, 20))
 
             # draw all sprites
             for entity in self.all_sprites:
