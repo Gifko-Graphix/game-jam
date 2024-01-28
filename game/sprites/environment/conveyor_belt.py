@@ -2,7 +2,7 @@
 from pygame import Surface, time
 from pygame.sprite import Sprite
 
-from game.defs import ELECTRIC_PANEL_TIMER_EVENT, Direction
+from game.defs import ELECTRIC_PANEL_TIMER_EVENT
 from game.levels.parameters import ConveyorBeltParameters
 from game.sprites.environment.electricPanel import OFF_TIME_SECONDS
 from game.sprites.persons.player import Player
@@ -10,10 +10,9 @@ from game.sprites.persons.player import Player
 
 class ConveyorBelt(Sprite):
     """Conveyor belt sprite."""
-# x: int = 500, y: int = 500, direction: Direction = Direction.right
-    def __init__(
-        self, params: ConveyorBeltParameters
-    ) -> None:
+
+    # x: int = 500, y: int = 500, direction: Direction = Direction.right
+    def __init__(self, params: ConveyorBeltParameters) -> None:
         """Initialize conveyor belt sprite."""
         super(ConveyorBelt, self).__init__()
         # self.surface = image.load("assets/conveyor_belt.png").convert()

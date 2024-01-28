@@ -59,7 +59,11 @@ Worker3DistractedFiles = [
 
 
 workerWorkingFiles = [Worker1WorkingFiles, Worker2WorkingFiles, Worker3WorkingFiles]
-workerDistractedFiles = [Worker1DistractedFiles, Worker2DistractedFiles, Worker3DistractedFiles]
+workerDistractedFiles = [
+    Worker1DistractedFiles,
+    Worker2DistractedFiles,
+    Worker3DistractedFiles,
+]
 
 
 class Worker(Person):
@@ -70,8 +74,12 @@ class Worker(Person):
         self.state = WorkerState.working
         self.direction = Direction.up
         self.workerType = params.worker_type
-        self.workerBusyAnim = [load_image(file, -1, 1) for file in workerWorkingFiles[self.workerType]]
-        self.workerDistractedAnim = [load_image(file, -1, 1) for file in workerDistractedFiles[self.workerType]]
+        self.workerBusyAnim = [
+            load_image(file, -1, 1) for file in workerWorkingFiles[self.workerType]
+        ]
+        self.workerDistractedAnim = [
+            load_image(file, -1, 1) for file in workerDistractedFiles[self.workerType]
+        ]
         self.rect.topleft = params.position
         self.distractedTimerValue = WORKER_DISTRACTION_TIMES[self.workerType]
         self.hitbox = self.rect.scale_by(2, 2)
@@ -85,7 +93,6 @@ class Worker(Person):
         elif self.state == WorkerState.distracted:
             self.surface = self.workerDistractedAnim[(self.animCount // 4) % 5][0]
         self.animCount -= 1
-
 
     def detectPlayer(self, player: Player) -> None:
         if self.hitbox.colliderect(player.rect) and self.state == WorkerState.working:

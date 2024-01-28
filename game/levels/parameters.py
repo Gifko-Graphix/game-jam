@@ -6,6 +6,7 @@ from game.defs import Direction
 
 WalkPath = list[tuple[int, int, Direction]]
 
+
 @dataclass
 class ManagerParameters:
     """Manager parameters."""
@@ -14,6 +15,7 @@ class ManagerParameters:
     walk_path: WalkPath
     # manager walk speed
     walk_speed: int
+
 
 @dataclass
 class ConveyorBeltParameters:
@@ -26,6 +28,7 @@ class ConveyorBeltParameters:
     # conveyor belt speed
     speed: int
 
+
 @dataclass
 class WorkerParameters:
     """Worker parameters."""
@@ -34,12 +37,14 @@ class WorkerParameters:
     position: tuple[int, int]
     worker_type: int
 
+
 @dataclass
 class ElectricPanelParameters:
     """Electric panel parameters."""
 
     # position
     position: tuple[int, int]
+
 
 @dataclass
 class EnvironmentParameters:
@@ -52,12 +57,14 @@ class EnvironmentParameters:
     # electric panel position
     electric_panel: ElectricPanelParameters
 
+
 @dataclass
 class PlayerParameters:
     """Player parameters."""
 
     # position
     position: tuple[int, int]
+
 
 @dataclass
 class LevelParameters:

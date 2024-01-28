@@ -1,17 +1,11 @@
-from typing import Optional  # noqa: I001
+from typing import Optional
 
 import pygame
-from pygame import display, event, time, font
-from pygame.locals import (
-    K_ESCAPE,
-    KEYDOWN,
-    K_RETURN
-)
+from pygame import display, event, font, time
+from pygame.locals import K_ESCAPE, KEYDOWN
 from pygame.sprite import Group as SpriteGroup
-from game.levels.parameters import LevelParameters
-from game.levels.list import levels
-from game.sprites.interaction_indicator import InteractionIndicator
 
+import game.colors as colors
 from game.defs import (
     ELECTRIC_PANEL_TIMER_EVENT,
     LEVEL_TIMER_EVENT,
@@ -23,9 +17,11 @@ from game.defs import (
     Direction,
     WorkerState,
 )
-import game.colors as colors
+from game.levels.list import levels
+from game.levels.parameters import LevelParameters
 from game.sprites.environment.conveyor_belt import ConveyorBelt
 from game.sprites.environment.electricPanel import ElectricPanel
+from game.sprites.interaction_indicator import InteractionIndicator
 from game.sprites.persons.manager import Manager
 from game.sprites.persons.player import Player
 from game.sprites.persons.worker import Worker
@@ -154,14 +150,14 @@ class Runner:
                 if e.type == pygame.QUIT:
                     self.end()
             keys = pygame.key.get_pressed()
-            
+
             if keys[pygame.K_RETURN]:
                 self.start_round()
             if keys[pygame.K_ESCAPE]:
                 self.end()
 
     def start_round(self):
-        self.init()
+        self.init(levels[0])
         self.game_over = False
         self.running = True
         self.player_win = None
@@ -180,7 +176,9 @@ class Runner:
         self.screen.blit(surface, rect)
 
         font = pygame.font.SysFont("Roboto Bold", 30)
-        surface = font.render("Press ENTER to play again, or Q to quit", True, colors.WHITE)
+        surface = font.render(
+            "Press ENTER to play again, or Q to quit", True, colors.WHITE
+        )
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.screen.blit(surface, rect)
         display.flip()
@@ -191,7 +189,7 @@ class Runner:
                     showEndScreen = False
                     self.stop()
             keys = pygame.key.get_pressed()
-            
+
             if keys[pygame.K_RETURN]:
                 showEndScreen = False
                 self.all_sprites.empty()
@@ -225,7 +223,7 @@ class Runner:
         self.all_sprites.add(self.CanInteractIndicator)
 
         for params in level_params.environment.workers:
-            worker = Worker(*params.position)
+            worker = Worker(params)
             self.all_sprites.add(worker)
             self.workers.add(worker)
             self.playerInteractables.add(worker)
@@ -288,9 +286,11 @@ class Runner:
                 worker.detectPlayer(self.player)
             self.electricPanel.detectPlayer(self.player)
             self.managers.update()
-            self.CanInteractIndicator.checkForAnyPossibleInteract(self.playerInteractables, self.player)
+            self.CanInteractIndicator.checkForAnyPossibleInteract(
+                self.playerInteractables, self.player
+            )
             self.CanInteractIndicator.update()
-    
+
             # check for collisions
             self.check_collisions()
 

@@ -7,9 +7,7 @@ from game.sprites.shared.meters import Meter
 from utils.loader import load_image
 
 # Bottom-left corner
-walk_path = [
-
-]
+walk_path = []
 
 # Object parameters
 speed = 5  # Adjust speed as needed
