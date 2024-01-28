@@ -112,7 +112,6 @@ class Runner:
             managers: list[Manager] = self.managers.sprites()
             for m in managers:
                 if m.meter.is_full:
-                    print("game over")
                     self.player_win = True
                     self.game_over = True
 
@@ -401,6 +400,7 @@ class Runner:
             # update all sprites
             self.player.update()
             self.workers.update([self.player])
+            self.electricPanel.update()
             workers: list[Worker] = self.workers.sprites()
             for worker in workers:
                 worker.detectPlayer(self.player)
