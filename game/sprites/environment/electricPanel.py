@@ -5,7 +5,7 @@ from game.levels.parameters import ElectricPanelParameters
 from game.sprites.persons.player import Player
 from utils.loader import load_image
 
-OFF_TIME_SECONDS = 70
+OFF_TIME_SECONDS = 50
 
 
 class ElectricPanel(pg.sprite.Sprite):
@@ -31,10 +31,14 @@ class ElectricPanel(pg.sprite.Sprite):
         else:
             self.canInteract = False
 
-    def foo_action(self):
+    def foo_action(self, allworkers):
         self.isOn = False
         self.isBroken = True
         self.countdownTimerValue = OFF_TIME_SECONDS
+        workers = allworkers.sprites()
+        for worker in workers:
+            if hasattr(worker, "change_animation_speed_factor"):
+                worker.change_animation_speed_factor(6)
         pg.time.set_timer(ELECTRIC_PANEL_TIMER_EVENT, 100)
 
     def countdown_timer(self):

@@ -7,7 +7,7 @@ from game.sprites.persons.player import Player
 from utils.loader import load_image
 
 DISTRACTION_TIME_SECONDS = 40
-WORKER_DISTRACTION_TIMES = [20, 40, 60]
+WORKER_DISTRACTION_TIMES = [20, 30, 40]
 
 Worker1WorkingFiles = [
     "Worker1BS.png",
@@ -83,15 +83,17 @@ class Worker(Person):
         self.rect.topleft = params.position
         self.distractedTimerValue = WORKER_DISTRACTION_TIMES[self.workerType]
         self.hitbox = self.rect.scale_by(2, 2)
-        self.animCount = 20
+        self.animSpeed = 4
+        self.animCount = len(self.workerBusyAnim) * self.animSpeed
+
 
     def update(self, all_sprites) -> None:
         if self.animCount <= 0:
-            self.animCount = 20
+            self.animCount = len(self.workerBusyAnim) * self.animSpeed
         if self.state == WorkerState.working:
-            self.surface = self.workerBusyAnim[(self.animCount // 4) % 5][0]
+            self.surface = self.workerBusyAnim[(self.animCount // self.animSpeed) % len(self.workerBusyAnim)][0]
         elif self.state == WorkerState.distracted:
-            self.surface = self.workerDistractedAnim[(self.animCount // 4) % 5][0]
+            self.surface = self.workerDistractedAnim[(self.animCount // self.animSpeed) % len(self.workerBusyAnim)][0]
         self.animCount -= 1
 
     def detectPlayer(self, player: Player) -> None:
@@ -120,3 +122,7 @@ class Worker(Person):
         if self.distractedTimerValue <= 0:
             pg.time.set_timer(WORKER_TIMER_EVENT, 0)
             self.state = WorkerState.working
+
+    def change_animation_speed_factor(self, new_speed):
+        self.animSpeed = new_speed
+        self.animCount = len(self.workerBusyAnim) * self.animSpeed
