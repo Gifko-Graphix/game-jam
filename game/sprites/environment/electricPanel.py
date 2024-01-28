@@ -14,11 +14,10 @@ class ElectricPanel(pg.sprite.Sprite):
         self.isOn = True
         self.canInteract = False
         self.rect.topleft = (900, 200)
-        self.hitbox = self.rect.scale_by(2,2)
+        self.hitbox = self.rect.scale_by(2, 2)
         self.countdownTimerValue = OFF_TIME_SECONDS
         self.hitbox = self.rect.scale_by(2, 2)
         self.interactDisplayText = "press SPACE to switch off Panel"
-
 
     def update(self) -> None:
         pass

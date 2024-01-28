@@ -2,11 +2,7 @@ from typing import Optional  # noqa: I001
 
 import pygame
 from pygame import display, event, time
-from pygame.locals import (
-    K_ESCAPE,
-    KEYDOWN,
-    K_RETURN
-)
+from pygame.locals import K_ESCAPE, KEYDOWN
 from pygame.sprite import Group as SpriteGroup
 from game.sprites.interaction_indicator import InteractionIndicator
 
@@ -151,12 +147,12 @@ class Runner:
                 if e.type == pygame.QUIT:
                     self.end()
             keys = pygame.key.get_pressed()
-            
+
             if keys[pygame.K_RETURN]:
                 break
             if keys[pygame.K_ESCAPE]:
                 self.end()
-    
+
     def end(self, player_won: Optional[bool] = None) -> None:
         """Show the stop Screen."""
         if player_won is None:
@@ -170,7 +166,9 @@ class Runner:
         self.screen.blit(surface, rect)
 
         font = pygame.font.SysFont("Roboto Bold", 30)
-        surface = font.render("Press ENTER to play again, or Q to quit", True, colors.WHITE)
+        surface = font.render(
+            "Press ENTER to play again, or Q to quit", True, colors.WHITE
+        )
         rect = surface.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.screen.blit(surface, rect)
         display.flip()
@@ -179,7 +177,7 @@ class Runner:
                 if e.type == pygame.QUIT:
                     self.end()
             keys = pygame.key.get_pressed()
-            
+
             if keys[pygame.K_RETURN]:
                 self.all_sprites.empty()
                 self.init()
@@ -187,7 +185,7 @@ class Runner:
             if keys[pygame.K_q]:
                 self.stop()
                 break
-        
+
         # self.stop()
 
     def run(self) -> None:
@@ -274,9 +272,11 @@ class Runner:
                 worker.detectPlayer(self.player)
             self.electricPanel.detectPlayer(self.player)
             self.managers.update()
-            self.CanInteractIndicator.checkForAnyPossibleInteract(self.playerInteractables, self.player)
+            self.CanInteractIndicator.checkForAnyPossibleInteract(
+                self.playerInteractables, self.player
+            )
             self.CanInteractIndicator.update()
-    
+
             # check for collisions
             self.check_collisions()
 

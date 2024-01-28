@@ -124,7 +124,7 @@ class Player(Person):
                 self.surface = self.idleLeft[0]
             if self.direction == Direction.right:
                 self.surface = self.idleRight[0]
-    
+
     def triggerInteractionDelay(self, allInteractables):
         for sprite in allInteractables:
             if sprite.canInteract:

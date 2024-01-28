@@ -59,6 +59,7 @@ M_walkRightFiles = [
     "ManagerR8.png",
 ]
 
+
 class Manager(Person):
     """Player Sprite"""
 
@@ -88,7 +89,6 @@ class Manager(Person):
         # Calculate the movement towards the current corner
         self.isWalking = True
         if self.isWalking:
-            
             if self.walkCount == 0:
                 self.walkCount = 8
             elif self.direction == Direction.up:
@@ -104,7 +104,7 @@ class Manager(Person):
             dx = corner_x - self.rect.x
             dy = corner_y - self.rect.y
             distance = (dx**2 + dy**2) ** 0.5
-            self.walkCount -=1
+            self.walkCount -= 1
         else:
             if self.direction == Direction.up:
                 self.surface = self.idleUp[0]
@@ -114,8 +114,6 @@ class Manager(Person):
                 self.surface = self.idleLeft[0]
             if self.direction == Direction.right:
                 self.surface = self.idleRight[0]
-
-        
 
         if distance > speed:
             # Normalize the direction vector
